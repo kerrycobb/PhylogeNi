@@ -11,7 +11,7 @@ Requires Nim to be installed on your system. See https://nim-lang.org/
 
 Installation with the nimble package manager is recommended:
 
-`nimble install https://github.com/kerrycobb/PhylogeNi`
+`nimble install phylogeni`
 
 
 ## Usage 
