@@ -1,10 +1,7 @@
 # PhylogeNi
 A library with some basic functions for working with phylogenetic trees.
 
-This is a Work in progress. Suggestions, contributions, and criticisms are welcome! 
-Contributions are especially welcome! Breaking changes are likely. I hope to 
-eventually use generics to allow any user object to be associated with tree 
-nodes which will result in substantial changes to usage but much greater flexibility. 
+This is a Work in progress. Suggestions, contributions, and criticisms are welcome! Breaking changes are likely.
 
 ## Installation
 Requires Nim to be installed on your system. See https://nim-lang.org/
