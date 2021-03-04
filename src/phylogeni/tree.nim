@@ -151,7 +151,7 @@ iterator iterleaves*[T](tree: Tree[T]): Node[T] =
 proc ladderize*[T](root: Node[T], ascending: bool = true) =
   ## Ladderize subtree
   var
-    nodeDescendantCount = initTable[Node, int]()
+    nodeDescendantCount = initTable[Node[T], int]()
     order: SortOrder
   if ascending:
     order = Ascending
@@ -165,7 +165,7 @@ proc ladderize*[T](root: Node[T], ascending: bool = true) =
       total += node.children.len
       nodeDescendantCount[node] = total
       node.children.sort(
-          cmp=proc(a, b: Node): int = cmp(nodeDescendantCount[a], 
+          cmp=proc(a, b: Node[T]): int = cmp(nodeDescendantCount[a], 
           nodeDescendantCount[b]), order=order)
 
 proc ladderize*[T](tree: Tree[T], ascending: bool = true) =

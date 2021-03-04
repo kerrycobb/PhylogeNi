@@ -44,12 +44,12 @@ var iterleaves: seq[string]
 for i in tree.iterleaves(): iterleaves.add(i.name)
 assert (iterleaves == @["B", "D", "F", "G"])
 
-#[
 # Check ladderizer
 tree.ladderize(ascending=false)
 var lad_desc: seq[string]
 for i in tree.preorder(): lad_desc.add(i.name)
 assert(lad_desc == @["A", "C", "E", "F", "G", "D", "B"])
+#[
 
 tree.ladderize(ascending=true)
 var lad_asc: seq[string]
