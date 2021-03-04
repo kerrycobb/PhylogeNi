@@ -7,15 +7,15 @@ type
   NewickError = object of IOError
 
   NewickParser = object of BaseLexer
-    tree: Tree
-    currNode: Node
+    tree: Tree[void]
+    currNode: Node[void]
 
-proc parseNewickStream*(stream: Stream): Tree =
+proc parseNewickStream*(stream: Stream): Tree[void] =
   ## Parse a newick stream
   var
     parser = NewickParser()
-    root = Node()
-    tree = Tree()
+    root = Node[void]()
+    tree = Tree[void]()
   parser.tree = tree
   parser.tree.root = root
   parser.currNode = root
@@ -31,7 +31,7 @@ proc parseNewickStream*(stream: Stream): Tree =
     of '\l': # same as \n
       parser.bufpos = lexbase.handleLF(parser, parser.bufpos)
     of '(':
-      var newNode = Node()
+      var newNode = Node[void]()
       parser.currNode.addChild(newNode)
       parser.currNode = newNode
       parser.bufpos.inc()
@@ -39,7 +39,7 @@ proc parseNewickStream*(stream: Stream): Tree =
       parser.currNode = parser.currNode.parent
       parser.bufpos.inc()
     of ',':
-      var newNode = Node()
+      var newNode = Node[void]()
       parser.currNode.parent.addChild(newNode)
       parser.currNode = newNode
       parser.bufpos.inc()
@@ -62,24 +62,24 @@ proc parseNewickStream*(stream: Stream): Tree =
         parser.currNode.length = parseFloat(split[1])
   result = parser.tree
 
-proc parseNewickString*(str: string): Tree =
+proc parseNewickString*(str: string): Tree[void] =
   ## Parse a newick string
   var ss = newStringStream(str)
   result = parseNewickStream(ss)
   ss.close()
 
-proc parseNewickFile*(path: string): Tree =
+proc parseNewickFile*(path: string): Tree[void] =
   ## Parse a newick file
   var fs = newFileStream(path, fmRead)
   result = parseNewickStream(fs)
   fs.close()
 
-proc writeNewickDataString(node: Node, str: var string) =
+proc writeNewickDataString*[T](node: Node[T], str: var string) =
   str.add(node.name)
   str.add(":")
   str.add($node.length)
 
-proc writeNewickString*(tree: Tree): string =
+proc writeNewickString*[T](tree: Tree[T]): string =
   ## Write newick string for Node object
   var str = ""
   for i in tree.newickorder():
@@ -98,7 +98,7 @@ proc writeNewickString*(tree: Tree): string =
   str.add(";")
   result = str
 
-proc writeNewickFile*(tree: Tree, filename:string) =
+proc writeNewickFile*[T](tree: Tree[T], filename:string) =
   # Write a newick file for Node object
   var str = writeNewickString(tree)
   writeFile(filename, str)
