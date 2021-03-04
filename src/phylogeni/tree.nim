@@ -10,7 +10,7 @@ type
     children*: seq[Node[T]]
     name*: string
     length*: float
-    data: T
+    data*: T
 
   Tree*[T] = ref object
     root*: Node[T]
