@@ -32,7 +32,6 @@ var postorder: seq[string]
 for i in tree.postorder(): postorder.add(i.name)
 assert (postorder == @["B", "D", "F", "G", "E", "C", "A"])
 
-#[
 var levelorder: seq[string]
 for i in tree.levelorder(): levelorder.add(i.name)
 assert (levelorder == @["A", "B", "C", "D", "E", "F", "G"])
@@ -45,6 +44,7 @@ var iterleaves: seq[string]
 for i in tree.iterleaves(): iterleaves.add(i.name)
 assert (iterleaves == @["B", "D", "F", "G"])
 
+#[
 # Check ladderizer
 tree.ladderize(ascending=false)
 var lad_desc: seq[string]

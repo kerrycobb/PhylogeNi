@@ -86,7 +86,7 @@ iterator postorder*[T](root: Node[T]): Node[T] =
   ## Postorder traverse
   var
     preStack = @[root]
-    postStack: seq[Node]
+    postStack: seq[Node[T]]
   while preStack.len > 0:
     var node = preStack.pop() 
     postStack.add(node)
