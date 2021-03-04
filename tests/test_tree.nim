@@ -49,12 +49,10 @@ tree.ladderize(ascending=false)
 var lad_desc: seq[string]
 for i in tree.preorder(): lad_desc.add(i.name)
 assert(lad_desc == @["A", "C", "E", "F", "G", "D", "B"])
-#[
 
 tree.ladderize(ascending=true)
 var lad_asc: seq[string]
 for i in tree.preorder(): lad_asc.add(i.name)
 assert(lad_asc == @["A", "B", "C", "D", "E", "F", "G"])
-]#
 
 
