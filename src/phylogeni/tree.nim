@@ -5,46 +5,49 @@ import algorithm, tables, hashes
 # TODO: Procs to remove nodes and subtrees
 
 type
-  Node* = ref object
-    parent*: Node
-    children*: seq[Node]
+  Node*[T] = ref object
+    parent*: Node[T]
+    children*: seq[Node[T]]
     name*: string
     length*: float
+    data*: T
 
-  Tree* = ref object
-    root*: Node
+  Tree*[T] = ref object
+    root*: Node[T]
     rooted*: bool
 
   TreeError = object of CatchableError
 
-proc newNode*(): Node =
+proc newNode*[T](): Node[T] =
   new(result)
 
-proc newTree*(): Tree =
+proc newTree*[T](): Tree[T] =
   new(result)
 
-proc hash*(n: Node): Hash =
+proc hash*[T](n: Node[T]): Hash =
+  #TODO Data is not hashed
+  #Use concept hashable
   result = n.name.hash !& n.length.hash
   result = !$result
 
-proc addChild*(parent, newChild: Node) =
+proc addChild*[T](parent: Node[T], newChild: Node[T]) =
   ## Add child node to parent
   newChild.parent = parent
   parent.children.add(newChild)
 
-proc addSister*(node, newSister: Node) =
+proc addSister*[T](node: Node[T], newSister: Node[T]) =
   ## Add sister node
   newSister.parent = node.parent
   node.parent.children.add(newSister)
 
-proc isLeaf*(node: Node): bool =
+proc isLeaf*[T](node: Node[T]): bool =
   ## Check if node is leaf
   if node.children.len == 0:
     result = true
   else:
     result = false
 
-proc prune*(tree: Tree, node: Node) =
+proc prune*[T](tree: Tree[T], node: Node[T]) =
   ## Prune node from tree
   var parent = node.parent
   if node == tree.root:
@@ -61,12 +64,12 @@ proc prune*(tree: Tree, node: Node) =
       child.parent = grandparent
       grandparent.children[grandparent.children.find(parent)] = child
 
-proc prune*(tree: Tree, nodes: seq[Node]) =
+proc prune*[T](tree: Tree[T], nodes: seq[Node[T]]) =
   ## Prune nodes from tree
   for i in nodes:
     tree.prune(i)
 
-iterator preorder*(root: Node): Node =
+iterator preorder*[T](root: Node[T]): Node[T] =
   ## Preorder traverse
   var stack = @[root]
   while stack.len > 0:
@@ -74,16 +77,16 @@ iterator preorder*(root: Node): Node =
     stack.add(node.children.reversed())
     yield node
 
-iterator preorder*(tree: Tree): Node =
+iterator preorder*[T](tree: Tree[T]): Node[T] =
   ## Preorder traverse
   for i in tree.root.preorder():
     yield i
 
-iterator postorder*(root: Node): Node =
+iterator postorder*[T](root: Node[T]): Node[T] =
   ## Postorder traverse
   var
     preStack = @[root]
-    postStack: seq[Node]
+    postStack: seq[Node[T]]
   while preStack.len > 0:
     var node = preStack.pop() 
     postStack.add(node)
@@ -92,14 +95,14 @@ iterator postorder*(root: Node): Node =
     var node = postStack.pop()
     yield node
    
-iterator postorder*(tree: Tree): Node =
+iterator postorder*[T](tree: Tree[T]): Node[T] =
   ## Postorder traverse
   for i in tree.root.postorder():
     yield i
 
-iterator newickorder*(root: Node): tuple[node:Node, firstVisit:bool] =
+iterator newickorder*[T](root: Node[T]): tuple[node:Node[T], firstVisit:bool] =
   ## Newick order traverse
-  var stack: seq[tuple[node: Node, firstVisit: bool]]
+  var stack: seq[tuple[node: Node[T], firstVisit: bool]]
   stack.add((node: root, firstVisit: false))
   stack.add((node: root, firstVisit: true))
   while stack.len > 0:
@@ -114,12 +117,12 @@ iterator newickorder*(root: Node): tuple[node:Node, firstVisit:bool] =
           else:
             stack.add((child, true))
 
-iterator newickorder*(tree: Tree): tuple[node:Node, firstVisit: bool] =
+iterator newickorder*[T](tree: Tree[T]): tuple[node:Node[T], firstVisit: bool] =
   ## Newick order traverse
   for i in tree.root.newickorder():
     yield i
 
-iterator levelorder*(root: Node): Node =
+iterator levelorder*[T](root: Node[T]): Node[T] =
   ## Levelorder traverse
   yield root
   var stack = root.children
@@ -129,26 +132,26 @@ iterator levelorder*(root: Node): Node =
     yield node
     stack.add(node.children)
 
-iterator levelorder*(tree: Tree): Node =
+iterator levelorder*[T](tree: Tree[T]): Node[T] =
   ## Levelorder traverse
   for i in tree.root.levelorder():
     yield i
 
-iterator iterleaves*(root: Node): Node =
+iterator iterleaves*[T](root: Node[T]): Node[T] =
   ## Iter over leaves
   for i in root.preorder():
     if i.is_leaf():
       yield i
 
-iterator iterleaves*(tree: Tree): Node =
+iterator iterleaves*[T](tree: Tree[T]): Node[T] =
   ## Iter over leaves
   for i in tree.root.iterleaves():
     yield i
 
-proc ladderize*(root: Node, ascending: bool = true) =
+proc ladderize*[T](root: Node[T], ascending: bool = true) =
   ## Ladderize subtree
   var
-    nodeDescendantCount = initTable[Node, int]()
+    nodeDescendantCount = initTable[Node[T], int]()
     order: SortOrder
   if ascending:
     order = Ascending
@@ -162,21 +165,20 @@ proc ladderize*(root: Node, ascending: bool = true) =
       total += node.children.len
       nodeDescendantCount[node] = total
       node.children.sort(
-          cmp=proc(a, b: Node): int = cmp(nodeDescendantCount[a], 
+          cmp=proc(a, b: Node[T]): int = cmp(nodeDescendantCount[a], 
           nodeDescendantCount[b]), order=order)
 
-proc ladderize*(tree: Tree, ascending: bool = true) =
+proc ladderize*[T](tree: Tree[T], ascending: bool = true) =
   ## Ladderize tree
   tree.root.ladderize(ascending=ascending)
 
-proc calcTreeLength*(tree: Tree): float =
+proc calcTreeLength*[T](tree: Tree[T]): float =
   # TODO: Include root if tree is rooted
   ## Calculate total length of tree
   var length = 0.0
   for i in tree.preorder():
     length += i.length
   result = length
-
 
 # TODO: Implement these:
 # proc mrca*(tree: Tree, nodes: seq[Nodes]): Node =

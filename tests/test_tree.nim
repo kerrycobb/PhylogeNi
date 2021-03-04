@@ -3,14 +3,14 @@ import ../src/phylogeni
 # TODO: pruning
 
 let
-  a = Node(name: "A")
-  b = Node(name: "B")
-  c = Node(name: "C")
-  d = Node(name: "D")
-  e = Node(name: "E")
-  f = Node(name: "F")
-  g = Node(name: "G")
-  tree = Tree(root: a, rooted: true)
+  a = Node[void](name: "A")
+  b = Node[void](name: "B")
+  c = Node[void](name: "C")
+  d = Node[void](name: "D")
+  e = Node[void](name: "E")
+  f = Node[void](name: "F")
+  g = Node[void](name: "G")
+  tree = Tree[void](root: a, rooted: true)
 
 a.add_child(b)
 a.add_child(c)
@@ -24,7 +24,8 @@ e.add_child(g)
 
 # Check traversals
 var preorder: seq[string]
-for i in tree.preorder(): preorder.add(i.name)
+for i in tree.preorder(): 
+  preorder.add(i.name)
 assert(preorder == @["A", "B", "C", "D", "E", "F", "G"])
 
 var postorder: seq[string]
@@ -53,3 +54,5 @@ tree.ladderize(ascending=true)
 var lad_asc: seq[string]
 for i in tree.preorder(): lad_asc.add(i.name)
 assert(lad_asc == @["A", "B", "C", "D", "E", "F", "G"])
+
+

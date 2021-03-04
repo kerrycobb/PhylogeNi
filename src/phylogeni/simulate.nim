@@ -23,10 +23,11 @@ import ./tree
 proc randExp(l: float): float =
   -ln(rand(1.0))/l
 
-proc uniformPureBirth*(nTips: int, birthRate=1.0): Tree =
+#TODO Why cant I remove the parameter fro unfiromPureBirth and just instead of T use void everywhere
+proc uniformPureBirth*(nTips: int, birthRate=1.0): Tree[void] =
   ## Simulate tree under uniform pure birth process
   var
-    t = Tree(root: Node())
+    t = Tree[void](root: Node[void]())
     leaves = @[t.root]
   for i in 1 ..< nTips:
     var
@@ -37,7 +38,7 @@ proc uniformPureBirth*(nTips: int, birthRate=1.0): Tree =
       node.length += waitTime
     # Add descendant nodes to random leaf
     for i in 0..1:
-      var nd = Node()
+      var nd = Node[void]()
       leaves[rLeaf].addChild(nd)
       leaves.add(nd)
     # Delete random leaf from leaf list
@@ -52,10 +53,10 @@ proc uniformPureBirth*(nTips: int, birthRate=1.0): Tree =
     inc += 1
   result = t
 
-proc uniformBirthDeath*(nTips: int, birthRate=1.0, deathRate=1.0, rerun=false): Tree =
+proc uniformBirthDeath*(nTips: int, birthRate=1.0, deathRate=1.0, rerun=false): Tree[void] =
   ## Simulate tree under uniform birth death process
   var
-    t = Tree(root: Node())
+    t = Tree[void](root: Node[void]())
     leaves = @[t.root]
   while true:
     if leaves.len() == nTips:
@@ -70,7 +71,7 @@ proc uniformBirthDeath*(nTips: int, birthRate=1.0, deathRate=1.0, rerun=false): 
     if rand(1.0) < birthRate / (birthRate + deathRate):
       # Speciation event
       for i in 0..1:
-        var nd = newNode()
+        var nd = newNode[void]()
         leaves[rLeaf].addChild(nd)
         leaves.add(nd)
     else:
@@ -95,5 +96,4 @@ proc uniformBirthDeath*(nTips: int, birthRate=1.0, deathRate=1.0, rerun=false): 
     node.name = "T" & $inc
     inc += 1
   result = t
-
 
