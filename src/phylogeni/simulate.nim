@@ -24,10 +24,10 @@ proc randExp(l: float): float =
   -ln(rand(1.0))/l
 
 #TODO Why cant I remove the parameter fro unfiromPureBirth and just instead of T use void everywhere
-proc uniformPureBirth*(nTips: int, birthRate=1.0): Tree[void] =
+proc uniformPureBirth*(nTips: int, birthRate=1.0, dataType=void): Tree[dataType] =
   ## Simulate tree under uniform pure birth process
   var
-    t = Tree[void](root: Node[void]())
+    t = Tree[dataType](root: Node[dataType]())
     leaves = @[t.root]
   for i in 1 ..< nTips:
     var
@@ -38,10 +38,10 @@ proc uniformPureBirth*(nTips: int, birthRate=1.0): Tree[void] =
       node.length += waitTime
     # Add descendant nodes to random leaf
     for i in 0..1:
-      var nd = Node[void]()
+      var nd = Node[dataType]()
       leaves[rLeaf].addChild(nd)
       leaves.add(nd)
-    # Delete random leaf from leaf list
+    # Remove previous random leaf from leaf list since it is now internal node
     leaves.delete(rLeaf)
   # Add additional length and tip labels to final leaves
   var
@@ -53,10 +53,11 @@ proc uniformPureBirth*(nTips: int, birthRate=1.0): Tree[void] =
     inc += 1
   result = t
 
-proc uniformBirthDeath*(nTips: int, birthRate=1.0, deathRate=1.0, rerun=false): Tree[void] =
+proc uniformBirthDeath*(nTips: int, birthRate=1.0, deathRate=1.0, rerun=false,
+    dataType=void): Tree[dataType] =
   ## Simulate tree under uniform birth death process
   var
-    t = Tree[void](root: Node[void]())
+    t = Tree[dataType](root: Node[dataType]())
     leaves = @[t.root]
   while true:
     if leaves.len() == nTips:

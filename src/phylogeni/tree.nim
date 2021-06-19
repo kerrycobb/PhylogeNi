@@ -18,11 +18,6 @@ type
 
   TreeError = object of CatchableError
 
-proc newNode*[T](): Node[T] =
-  new(result)
-
-proc newTree*[T](): Tree[T] =
-  new(result)
 
 proc hash*[T](n: Node[T]): Hash =
   #TODO Data is not hashed
