@@ -5,10 +5,24 @@ import algorithm, tables, hashes
 # TODO: Procs to remove nodes and subtrees
 
 type
+  # NodeKind = enum nkLeaf, nkInner 
+
+  # TODO: Decide if this would be better
+  # Node*[T] = ref object 
+  #   case kind: NodeKind
+  #   of nkLeaf:
+  #     discard
+  #   of nkInner:
+  #     children*: seq[Node[T]]
+  #   parent*: Node[T]
+  #   label*: string
+  #   length*: float
+  #   data*: T
+
   Node*[T] = ref object
     parent*: Node[T]
     children*: seq[Node[T]]
-    name*: string
+    label*: string
     length*: float
     data*: T
 
@@ -16,13 +30,14 @@ type
     root*: Node[T]
     rooted*: bool
 
-  TreeError = object of CatchableError
+  TreeSeq*[T] = seq[Tree[T]]
 
+  TreeError* = object of CatchableError
 
 proc hash*[T](n: Node[T]): Hash =
   #TODO Data is not hashed
   #Use concept hashable
-  result = n.name.hash !& n.length.hash
+  result = n.label.hash !& n.length.hash
   result = !$result
 
 proc addChild*[T](parent: Node[T], newChild: Node[T]) =
@@ -168,9 +183,10 @@ proc ladderize*[T](tree: Tree[T], ascending: bool = true) =
   tree.root.ladderize(ascending=ascending)
 
 proc calcTreeLength*[T](tree: Tree[T]): float =
-  # TODO: Include root if tree is rooted
   ## Calculate total length of tree
   var length = 0.0
+  if tree.rooted:
+    length += tree.root.length 
   for i in tree.preorder():
     length += i.length
   result = length
