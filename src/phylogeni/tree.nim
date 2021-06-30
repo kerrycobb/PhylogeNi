@@ -1,8 +1,5 @@
 import algorithm, tables, hashes
 
-# TODO: Inorder traversal
-# TODO: Procs to remove nodes and subtrees
-
 type
   # NodeKind = enum nkLeaf, nkInner 
 
@@ -134,7 +131,7 @@ iterator newickorder*[T](tree: Tree[T]): tuple[node:Node[T], firstVisit: bool] =
 iterator levelorder*[T](root: Node[T]): Node[T] =
   ## Levelorder traverse
   yield root
-  var stack = root.children
+  var stack = root.children 
   while stack.len > 0:
     var node = stack[0]
     stack.delete(0)
@@ -144,6 +141,37 @@ iterator levelorder*[T](root: Node[T]): Node[T] =
 iterator levelorder*[T](tree: Tree[T]): Node[T] =
   ## Levelorder traverse
   for i in tree.root.levelorder():
+    yield i
+
+iterator inorder*[T](root: Node[T]): Node[T] =
+  ## Inorder traverse
+  var
+    stack: seq[Node[T]]
+    current = root
+  while current != nil or stack.len > 0:
+    while current != nil:
+      stack.add(current)
+      if current.children.len == 2:
+        current = current.children[0]
+      elif current.children.len == 0:
+        current = nil
+      else:
+        #TODO: use exceptions
+        echo "Tree must be strictly bifurcating for inorder traverse"
+        quit()
+    if stack.len > 0:
+      var node = stack.pop()
+      yield node
+      if node.children.len == 2:
+        current = node.children[1]
+      elif node.children.len == 0:
+        current = nil
+      else:
+        echo "Tree must be strictly bifurcating for inorder traverse"
+        quit()
+
+iterator inorder*[T](tree: Tree[T]): Node[T] =  
+  for i in tree.root.inorder():
     yield i
 
 iterator iterleaves*[T](root: Node[T]): Node[T] =
@@ -194,6 +222,8 @@ proc calcTreeLength*[T](tree: Tree[T]): float =
 # proc mrca*(tree: Tree, nodes: seq[Nodes]): Node =
   ## Return node of most recent common ancestor
 # proc treeHeight*(node: Node) =
+# proc delete*(node: Node) = 
+  ## Remove only this node and not parent or children
 # proc extractTree*(node: Node): Tree =
   ## Returns rooted tree
 # proc findName*(name: string): Node =

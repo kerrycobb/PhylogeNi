@@ -34,6 +34,9 @@ suite "Tree Type":
 
   test "levelorder":
     check(toSeq(tree.levelorder) == "a b c d e f g")
+  
+  test "inorder":
+    check(toSeq(tree.inorder) == "b a d c f e g")
 
   test "iterleaves":
     check(toSeq(tree.iterleaves) == "b d f g")

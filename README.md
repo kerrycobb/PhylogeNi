@@ -57,6 +57,12 @@ for i in tree.levelorder():
   echo i.label
 ```
 
+##### Inorder Traversal
+```nim
+for i in tree.inorder():
+  echo i.label
+```
+
 ##### Traverse Leaves
 ```nim
 for i in tree.iterleaves(): 
