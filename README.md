@@ -4,7 +4,7 @@ A library with some basic functions for working with phylogenetic trees.
 This is a Work in progress. Suggestions, contributions, and criticisms are welcome! Breaking changes are likely.
 
 ## Installation
-Requires Nim to be installed on your system. See https://nim-lang.org/
+You will need the Nim compiler to be installed on your system. See https://nim-lang.org/
 
 Installation with the nimble package manager is recommended:
 
@@ -71,7 +71,6 @@ for i in tree.newickorder():
   echo "Name: ", i.node[], ", ", "First visit: ", i.firstVisit   
 ```
 
-
 ### Ladderize Tree
 ```nim
 tree.ladderize(ascending=false)
@@ -84,9 +83,11 @@ for i in tree.preorder():
 ```
 
 ### Prune Tree
+```nim
 tree.prune(e)
 for i in tree.preorder():
   echo i.label
+```
 
 ### Reading Newick String
 ```nim
