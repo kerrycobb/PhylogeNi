@@ -49,7 +49,7 @@ proc uniformPureBirth*(nTips: int, birthRate=1.0, dataType=void): Tree[dataType]
     inc = 1
   for node in leaves:
     node.length += waitTime
-    node.name = "T" & $inc
+    node.label = "T" & $inc
     inc += 1
   result = t
 
@@ -72,7 +72,7 @@ proc uniformBirthDeath*(nTips: int, birthRate=1.0, deathRate=1.0, rerun=false,
     if rand(1.0) < birthRate / (birthRate + deathRate):
       # Speciation event
       for i in 0..1:
-        var nd = newNode[void]()
+        var nd = Node[dataType]()
         leaves[rLeaf].addChild(nd)
         leaves.add(nd)
     else:
@@ -94,7 +94,7 @@ proc uniformBirthDeath*(nTips: int, birthRate=1.0, deathRate=1.0, rerun=false,
     inc = 1
   for node in leaves:
     node.length += waitTime
-    node.name = "T" & $inc
+    node.label = "T" & $inc
     inc += 1
   result = t
 

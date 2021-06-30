@@ -2,7 +2,7 @@ import streams, lexbase, strformat, strutils
 import ../tree
 
 type 
-  NewickError = object of IOError
+  NewickError* = object of IOError
 
   NewickState = enum
     newickStart, newickTopology, newickLabel, newickLength, newickEnd, newickEOF
@@ -19,7 +19,7 @@ const newickWhitespace = {' ', '\t', '\c', '\l'}
 proc raiseError[T](p: NewickParser[T], msg: string) = 
   var 
     lineNum = $p.lineNumber 
-    colNum = $p.getColNumber(p.bufpos)
+    colNum = $p.getColNumber(p.bufpos+1)
     m = fmt"{msg} at line {lineNum}, column {colNum}"
   raise newException(NewickError, m)
 
@@ -137,7 +137,7 @@ proc parseLabel[T](p: var NewickParser[T]) =
         p.token = ""
         while true:
           case p.buf[p.bufpos]
-          of '(', ',', ')', ';', ':', '[', newickWhitespace, EndOfFile:
+          of '(', ',', ')', ';', ':', '[', ']', newickWhitespace, EndOfFile:
             parseLabel = false
             break
           of '"':
@@ -148,7 +148,7 @@ proc parseLabel[T](p: var NewickParser[T]) =
         p.currNode.label = p.token
         parseLabel = false
       else:
-        p.raiseError("Unexpected character") 
+        p.raiseError(&"Unexpected character \"{p.buf[p.bufpos]}\"") 
 
 proc parseTopology[T](p: var NewickParser[T]) = 
   # Parse newick tree 
@@ -176,7 +176,7 @@ proc parseTopology[T](p: var NewickParser[T]) =
     else:
       p.raiseError("Mismatched parentheses") 
   else:
-    p.raiseError("Unexpected character")
+    p.raiseError(&"Internal error, report possible bug") 
 
 proc parseStart[T](p: var NewickParser[T]) = 
   # Parse beginning of newick file
@@ -195,11 +195,13 @@ proc parseStart[T](p: var NewickParser[T]) =
         of 'u', 'U':
           p.tree.rooted = false
         else:
-          p.raiseError("Unexpected character")
+          p.bufpos.inc(2)
+          p.raiseError(&"Unexpected character \"{p.buf[p.bufpos]}\"") 
         if p.buf[p.bufpos+3] == ']':
           p.bufpos.inc(4)
         else:
-          p.raiseError("Expected ]")
+          p.bufpos.inc(3)
+          p.raiseError("Expected \"]\"")
       else:
         p.parseComment()
     of EndOfFile:
@@ -226,7 +228,7 @@ proc parseTree[T](p: var NewickParser[T]) =
     of newickEOF:
       break
 
-proc parseNewickStream*[T](tree: Tree[T], stream: Stream) =
+proc parseNewickStream*[T](tree: var Tree[T], stream: Stream) =
   ## Parse a newick stream
   var
     p = NewickParser[T]()
@@ -254,11 +256,10 @@ proc parseNewickStream*[T](treeSeq: var TreeSeq[T], stream: Stream) =
     of newickEnd:
       treeSeq.add(p.tree)
     else:
-      p.raiseError("Internal error") 
-  
+      p.raiseError("Internal error, report possible bug") 
   p.close()
 
-proc parseNewickString*[T](tree: Tree[T], str: string) =
+proc parseNewickString*[T](tree: var Tree[T], str: string) =
   ## Parse a newick string
   var ss = newStringStream(str)
   tree.parseNewickStream(ss)
@@ -270,7 +271,7 @@ proc parseNewickString*[T](treesSeq: var TreeSeq[T], str: string) =
   treesSeq.parseNewickStream(ss)
   ss.close()
 
-proc parseNewickFile*[T](tree: Tree[T], path: string) =
+proc parseNewickFile*[T](tree: var Tree[T], path: string) =
   ## Parse a newick file
   var fs = newFileStream(path, fmRead)
   tree.parseNewickStream(fs)
@@ -283,16 +284,4 @@ proc parseNewickFile*[T](treeSeq: var TreeSeq[T], path: string) =
   fs.close()
 
 
-var t = Tree[string]() 
-t.parseNewickString("( B , C ) A ;")
-for i in t.preorder():
-  echo i[]
 
-# echo "----------------------------------"
-
-# var ts: TreeSeq[string] 
-# ts.parseNewickString("(C,B)A; (D,E)F;")
-# for t in ts:
-#   echo "---"
-#   for i in t.preorder():
-#     echo i[]
