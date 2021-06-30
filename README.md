@@ -20,14 +20,14 @@ API documentation at https://kerrycobb.github.io/PhylogeNi/
 import phylogeni
 
 let
-  a = Node(name: "A")
-  b = Node(name: "B")
-  c = Node(name: "C")
-  d = Node(name: "D")
-  e = Node(name: "E")
-  f = Node(name: "F")
-  g = Node(name: "G")
-  tree = Tree(root: a, rooted: true)
+  a = Node[void](label: "A")
+  b = Node[void](label: "B")
+  c = Node[void](label: "C")
+  d = Node[void](label: "D")
+  e = Node[void](label: "E")
+  f = Node[void](label: "F")
+  g = Node[void](label: "G")
+  tree = Tree[void](root: a, rooted: true)
 
 a.add_child(b)
 a.add_child(c)
@@ -42,52 +42,58 @@ e.add_child(g)
 ##### Preorder Traversal
 ```nim
 for i in tree.preorder(): 
-  echo i.name
+  echo i.label
 ```
 
 ##### Postorder Traversal
 ```nim
 for i in tree.postorder(): 
-  echo i.name
+  echo i.label
 ```
 
 ##### Level Order Traversal
 ```nim
 for i in tree.levelorder(): 
-  echo i.name
-```
-
-##### Newick Order Traversal
-Used for generating newick files. A hybrid of preorder and post order traversal
-where all internal nodes are visited twice.
-
-```nim
-for i in tree.newickorder(): 
-  echo "Name: ", i.node.name, ", ", "First visit: ", i.firstVisit   
+  echo i.label
 ```
 
 ##### Traverse Leaves
 ```nim
 for i in tree.iterleaves(): 
-  echo i.name
+  echo i.label
 ```
+
+##### Newick Order Traversal
+Used for generating newick files. A hybrid of preorder and post order traversal
+where all internal nodes are visited twice.
+```nim
+for i in tree.newickorder(): 
+  echo "Name: ", i.node[], ", ", "First visit: ", i.firstVisit   
+```
+
 
 ### Ladderize Tree
 ```nim
 tree.ladderize(ascending=false)
 for i in tree.preorder(): 
-  echo i.name
+  echo i.label
 
 tree.ladderize(ascending=true)
 for i in tree.preorder(): 
-  echo i.name
+  echo i.label
 ```
+
+### Prune Tree
+tree.prune(e)
+for i in tree.preorder():
+  echo i.label
 
 ### Reading Newick String
 ```nim
 var
-  str = "((C:1.0,D:1.0)B:1.0,(F:1.0,G:1.0)E:1.0)A:1.0;"
-  tree = parseNewickString(str)
+  tree = Tree[string]()
+  str = "[&R]((C:1.0[&data],D:1.0[&data])B:1.0[&data],(F:1.0[&data],G:1.0[&data])E:1.0[&data])A:1.0[&data];"
+tree.parseNewickString(str)
 ```
 
 ### Write Newick String 
@@ -98,7 +104,8 @@ var s = tree.writeNewickString()
 ### Read Newick File
 ```nim 
 var
-  tree = parseNewickFile("tree.nwk")
+  tree = Tree[void]()
+tree.parseNewickFile("tree.nwk")
 ```
 
 ### Write Newick File

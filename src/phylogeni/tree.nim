@@ -1,6 +1,5 @@
 import algorithm, tables, hashes
 
-# TODO: Add more error checks and exceptions 
 # TODO: Inorder traversal
 # TODO: Procs to remove nodes and subtrees
 
