@@ -7,13 +7,17 @@ proc writeAnnotation(node: Node[void], str: var string) =
   discard
 
 proc writeNewickData[T](node: Node[T], str: var string) =
-  str.add(node.name)
+  str.add(node.label)
   str.add(fmt":{$node.length}")
   node.writeAnnotation(str)
 
 proc writeNewickString*[T](tree: Tree[T]): string =
   ## Write newick string for Node object
   var str = ""
+  if tree.rooted:
+    str.add("[&R]")
+  else:
+    str.add("[&U]")
   for i in tree.newickorder():
     if i.firstVisit == true:
       if i.node.isLeaf():

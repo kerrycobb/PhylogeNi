@@ -39,7 +39,7 @@ proc parseWhitespace[T](p: var NewickParser[T], skip=true) =
       break
 
 proc parseAnnotation(p: var NewickParser[string], annotation: string) =  
-  p.currNode.data = annotation 
+  p.currNode.data = annotation[1..^1]
 
 proc parseAnnotation(p: var NewickParser[void], annotation: string) = 
   discard

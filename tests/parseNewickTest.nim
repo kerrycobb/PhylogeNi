@@ -1,15 +1,38 @@
 import ../src/phylogeni
 import unittest
+import strutils
+
+template toSeq(iter: untyped, param: untyped): untyped = 
+  var s: seq[string]  
+  for i in iter:
+    s.add($i.param)
+  s.join(" ") 
 
 suite "Parse Valid Trees":
   var t = Tree[string]()
   test "valid 1":
     t.parseNewickString(" [&r] (( [comment] C : 1.0 [&data] , D [comment] : 1.0 [&data] )B : [Comment] 1.0 [&data] )A : 1.0 [comment] [&data] ; ")
+    check(t.rooted)
+    check(toSeq(t.preorder, label) == "A B C D" )
+    check(toSeq(t.preorder, length) == "1.0 1.0 1.0 1.0")
+    check(toSeq(t.preorder, data) == "data data data data")
+
   test "valid 2":
     t.parseNewickString(" [&r] (( [&data] C : 1.0 , D [&data] : 1.0 ) B : [&data] 1.0 ) A : 1.0 [&data] ; ")
+    check(t.rooted)
+    check(toSeq(t.preorder, label) == "A B C D" )
+    check(toSeq(t.preorder, length) == "1.0 1.0 1.0 1.0")
+    check(toSeq(t.preorder, data) == "data data data data")
+
   test "valid 3":
-    t.parseNewickString(" [&r] ( \"B B\" : 1.0 , \"C C\" : 1.0 ) \"A A\" : 1.0  ; ")
-    
+    t.parseNewickString(" [&r] ( \"B B\" : 1.0 [&data] , \"C C\" : 1.0 [&data] ) \"A A\" : 1.0  [&data] ; ")
+    check(t.rooted)
+    check(toSeq(t.preorder, label) == "A A B B C C" )
+    check(toSeq(t.preorder, length) == "1.0 1.0 1.0")
+    check(toSeq(t.preorder, data) == "data data data")
+
+
+
 suite "Parse Invalid Trees":
   var t = Tree[void]()
 
