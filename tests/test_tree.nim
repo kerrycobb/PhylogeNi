@@ -52,9 +52,17 @@ suite "Tree Type":
     tree.ladderize()
     check(toSeq(tree.preorder) == "a b c d e f g")
 
+  test "ascii":
+    check(tree.ascii == """
+                      -a /-b
+                         \c /-d
+                            \e /-f
+                               \-g""".dedent())
+    # TODO: echo tree
+    
   test "prune":
-    tree.prune(e)
+    var pruned = tree
+    pruned.prune(e)
     check(toSeq(tree.preorder) == "a b d")
-
 
 

@@ -1,14 +1,17 @@
-import algorithm, tables, hashes
+import algorithm, tables, hashes, strutils, sequtils
 
 type
-  # NodeKind = enum nkLeaf, nkInner 
+  # NodeKind = enum nkLeaf, nkInner, nkRoot 
 
   # TODO: Decide if this would be better
   # Node*[T] = ref object 
   #   case kind: NodeKind
   #   of nkLeaf:
-  #     discard
+  #     parent*: Node[T]
   #   of nkInner:
+  #     children*: seq[Node[T]]
+  #     parent*: Node[T]
+  #   of nkRoot:
   #     children*: seq[Node[T]]
   #   parent*: Node[T]
   #   label*: string
@@ -218,6 +221,70 @@ proc calcTreeLength*[T](tree: Tree[T]): float =
     length += i.length
   result = length
 
+proc get_ascii[T](node: Node[T], char1="-", showInternal=true): tuple[clines: seq[string], mid:int] = 
+  var 
+    len = 3 
+  if node.children.len == 0 or showInternal == true:
+    if node.label.len > len:
+      len = node.label.len
+  var
+    pad = strutils.repeat(' ', len)
+    pa = strutils.repeat(' ', len-1)
+  if node.children.len > 0:
+    var 
+      mids: seq[int] 
+      results: seq[string]
+    for child in node.children:
+      var char2: string
+      if node.children.len == 1:
+        char2 = "-" 
+      elif child == node.children[0]:
+        char2 = "/"
+      elif child == node.children[^1]:
+        char2 = "\\"
+      else:
+        char2 = "-"
+      var (clines, mid) = get_ascii(child, char2, showInternal)
+      mids.add(mid+len(results))
+      results.add(clines)
+    var 
+      lo = mids[0]
+      hi = mids[^1]
+      last = len(results)
+      mid = int((lo+hi)/2)
+      prefixes: seq[string] 
+    prefixes.add(sequtils.repeat(pad, lo+1))
+    prefixes.add(sequtils.repeat(pa & "|", hi-lo-1))
+    prefixes.add(sequtils.repeat(pad, last-hi))
+    prefixes[mid] = char1 & strutils.repeat("-", len-2) & prefixes[mid][^1]
+    var new_results: seq[string]  
+    for (p, r) in zip(prefixes, results):
+      new_results.add(p&r)
+    if showInternal:
+      var stem = new_results[mid]
+      new_results[mid] = stem[0] & node.label & stem[node.label.len+1..^1]
+    result = (new_results, mid) 
+  else:
+    result = (@[char1 & "-" & node.label], 0)
+
+proc ascii*[T](node: Node[T], char1="-", showInternal=true): string = 
+  var (lines, mid) = get_ascii(node, char1, showInternal) 
+  result = lines.join("\n")
+
+proc ascii*[T](tree: Tree[T], char1="-", showInternal=true): string = 
+  var (lines, mid) = get_ascii(tree.root, char1, showInternal) 
+  result = lines.join("\n")
+
+proc `$`*[T](tree: Tree[T]) = 
+  var str = ascii(tree.root) 
+  writeline(stdout, str)
+
+proc `$`*[T](node: Node[T]) = 
+  var str = ascii(node) 
+  writeline(stdout, str)
+
+
+
 # TODO: Implement these:
 # proc mrca*(tree: Tree, nodes: seq[Nodes]): Node =
   ## Return node of most recent common ancestor
@@ -234,3 +301,11 @@ proc calcTreeLength*[T](tree: Tree[T]): float =
 # proc subtree_swap*():
 # proc subtree_prune_regraft*():
 # proc fixed_nodeheight_prune_regraft*():
+
+import ./io/parseNewick
+var 
+  tree = Tree[void]()
+tree.parseNewickString("(((A,B,C)D,E,F)G,H)I;")
+
+var a = tree.ascii()
+echo tree 
