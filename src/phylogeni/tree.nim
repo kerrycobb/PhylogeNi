@@ -275,13 +275,13 @@ proc ascii*[T](tree: Tree[T], char1="-", showInternal=true): string =
   var (lines, mid) = get_ascii(tree.root, char1, showInternal) 
   result = lines.join("\n")
 
-proc `$`*[T](tree: Tree[T]) = 
-  var str = ascii(tree.root) 
-  writeline(stdout, str)
+# proc `$`*[T](tree: Tree[T]) = 
+#   var str = ascii(tree.root) 
+#   writeline(stdout, str)
 
-proc `$`*[T](node: Node[T]) = 
-  var str = ascii(node) 
-  writeline(stdout, str)
+# proc `$`*[T](node: Node[T]) = 
+#   var str = ascii(node) 
+#   writeline(stdout, str)
 
 
 
@@ -302,10 +302,10 @@ proc `$`*[T](node: Node[T]) =
 # proc subtree_prune_regraft*():
 # proc fixed_nodeheight_prune_regraft*():
 
-import ./io/parseNewick
-var 
-  tree = Tree[void]()
-tree.parseNewickString("(((A,B,C)D,E,F)G,H)I;")
+# import ./io/parseNewick
+# var 
+#   tree = Tree[void]()
+# tree.parseNewickString("(((A,B,C)D,E,F)G,H)I;")
 
-var a = tree.ascii()
-echo tree 
+# # var a = tree.ascii()
+# echo tree 
