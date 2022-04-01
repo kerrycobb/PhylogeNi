@@ -45,6 +45,7 @@ proc parseAnnotation(p: var NewickParser[void], annotation: string) =
   discard
 
 proc parseComment[T](p: var NewickParser[T], showComments=false) = 
+  mixin parseAnnotation
   p.token = ""
   p.bufpos.inc()
   while true:
