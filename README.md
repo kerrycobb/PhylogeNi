@@ -1,17 +1,23 @@
-# PhylogeNi
-A library with some basic functions for working with phylogenetic trees.
+![Github Actions CI](https://github.com/kerrycobb/phylogeni/actions/workflows/tests.yml/badge.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![Stability](https://img.shields.io/badge/stability-experimental-orange.svg)
 
-This is a Work in progress. Suggestions, contributions, and criticisms are welcome! Breaking changes are likely.
+# PhylogeNi
+PhylogeNi is a Nim library with some basic functions for working with phylogenetic trees.
+
+PhylogeNi is stil a Work in progress. Suggestions, contributions, and criticisms are welcome! Breaking changes are likely.
+
+Read the documentation [here](https://kerrycobb.github.io/PhylogeNi)
 
 ## Installation
 You will need the Nim compiler to be installed on your system. See https://nim-lang.org/
 
-Installation with the nimble package manager is recommended:
+It is recommended that BioSeq be installed with nimble.
 
 `nimble install phylogeni`
 
 
-## Usage 
+<!-- ## Usage 
 
 API documentation at https://kerrycobb.github.io/PhylogeNi/
 
@@ -133,4 +139,4 @@ var tree = uniformPureBirth(10)
 import random
 randomize()
 var tree = uniformBirthDeath(10, rerun=true)
-```
+``` -->

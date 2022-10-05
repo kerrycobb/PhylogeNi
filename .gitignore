@@ -1,11 +1,6 @@
-# Ignore all
 *
-
-# Unignore all with extensions
 !*.*
-
-# Unignore all dirs
 !*/
 
-# Ignore
 nimcache/
+htmldocs/

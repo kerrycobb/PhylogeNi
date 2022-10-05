@@ -1,4 +1,5 @@
-import ../tree, strformat
+import ../tree
+import std/strformat
 
 proc writeAnnotation(node: Node[string], str: var string) = 
   str.add(fmt"[&{node.data}]")

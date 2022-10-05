@@ -1,0 +1,23 @@
+name: PhylogeNi Docs CI 
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: nimlang/nim
+    steps:
+      - uses: actions/checkout@v3
+      - run: nimble install -Y
+      - name: build-html
+        run: |
+          nim doc --project --index:on --git.url:https://github.com/kerrycobb/PhylogeNi --outdir:htmldocs src/phylogeni.nim
+          mv ./htmldocs/phylogeni.html ./htmldocs/index.html 
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./htmldocs
