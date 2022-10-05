@@ -7,3 +7,20 @@ export tree,
        parseNewick,
        writeNewick,
        simulate
+
+## =========
+## PhylogeNi
+## =========
+##
+##
+##
+##
+##
+##
+##
+##
+##
+##
+##
+##
+##

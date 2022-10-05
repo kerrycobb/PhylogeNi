@@ -5,9 +5,7 @@
 # PhylogeNi
 PhylogeNi is a Nim library with some basic functions for working with phylogenetic trees.
 
-PhylogeNi is stil a Work in progress. Suggestions, contributions, and criticisms are welcome! Breaking changes are likely.
-
-Read the documentation [here](https://kerrycobb.github.io/PhylogeNi)
+PhylogeNi is a work in progress. Suggestions, contributions, and criticisms are welcome! Breaking changes are likely.
 
 ## Installation
 You will need the Nim compiler to be installed on your system. See https://nim-lang.org/
@@ -16,6 +14,8 @@ It is recommended that BioSeq be installed with nimble.
 
 `nimble install phylogeni`
 
+## Usage
+Read the documentation [here](https://kerrycobb.github.io/PhylogeNi)
 
 <!-- ## Usage 
 
