@@ -8,12 +8,12 @@ proc writeAnnotation(node: Node[void], str: var string) =
   discard
 
 proc writeNewickData[T](node: Node[T], str: var string) =
+  mixin writeAnnotation 
   str.add(node.label)
   str.add(fmt":{$node.length}")
   node.writeAnnotation(str)
 
 proc writeNewickString*[T](tree: Tree[T]): string =
-  mixin writeNewickData
   ## Write newick string for Node object
   var str = ""
   if tree.rooted:
