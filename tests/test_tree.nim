@@ -47,7 +47,7 @@ suite "Tree Type":
     check (newickorder == @[("a", true), ("b", true), ("c", true), ("d", true), ("e", true), ("f", true), ("g", true), ("e", false), ("c", false), ("a", false)])
 
   test "ladderize":
-    tree.ladderize(ascending=false)
+    tree.ladderize(Descending)
     check(toSeq(tree.preorder) == "a c e f g d b")
     tree.ladderize()
     check(toSeq(tree.preorder) == "a b c d e f g")
