@@ -1,6 +1,6 @@
 import algorithm, tables, hashes, strutils, sequtils
 
-export algorithm
+export algorithm # TODO: Only export cmp enum
 
 type
   # NodeKind = enum nkLeaf, nkInner, nkRoot 
@@ -205,6 +205,7 @@ iterator iterleaves*[T](tree: Tree[T]): Node[T] =
 
 proc ladderize*[T](root: Node[T], order: SortOrder = Ascending) =
   ## Ladderize subtree
+  # TODO: Reimplement with heap queue
   var
     nodeDescendantCount = initTable[Node[T], int]()
   for node in root.postorder():
