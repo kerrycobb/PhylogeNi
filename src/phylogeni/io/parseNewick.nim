@@ -7,10 +7,10 @@ type
   NewickState = enum
     newickStart, newickTopology, newickLabel, newickLength, newickEnd, newickEOF
   
-  NewickParser[T] = object of BaseLexer
+  NewickParser*[T] = object of BaseLexer
     tree: Tree[T]
-    currNode: Node[T]
-    token : string 
+    currNode*: Node[T]
+    token: string 
     state: NewickState
     annotationState: bool # False if an annotation has already been parsed 
 
@@ -39,12 +39,13 @@ proc parseWhitespace[T](p: var NewickParser[T], skip=true) =
       break
 
 proc parseAnnotation(p: var NewickParser[string], annotation: string) =  
-  p.currNode.data = annotation[1..^1]
+  p.currNode.data = annotation
 
 proc parseAnnotation(p: var NewickParser[void], annotation: string) = 
   discard
 
-proc parseComment[T](p: var NewickParser[T], showComments=false) = 
+proc parseBracket[T](p: var NewickParser[T], showComments=false) = 
+  # TODO: handle unexpected end of file and newick statement
   mixin parseAnnotation
   p.token = ""
   p.bufpos.inc()
@@ -60,7 +61,7 @@ proc parseComment[T](p: var NewickParser[T], showComments=false) =
       p.bufpos.inc()
   if p.token.startswith('&'):
     if p.annotationState:
-      p.parseAnnotation(p.token)
+      p.parseAnnotation(p.token[1..^1])
       p.annotationState = false
   else:
     if showComments:
@@ -76,7 +77,7 @@ proc parseLength[T](p: var NewickParser[T]) =
     of newickWhitespace: 
       p.parseWhitespace()
     of '[':
-      p.parseComment()
+      p.parseBracket()
     of EndOfFile:
       p.raiseError("Unexpected end of stream")
     else:
@@ -108,7 +109,7 @@ proc parseLabel[T](p: var NewickParser[T]) =
       p.bufpos.inc()
       break
     of '[':
-      p.parseComment()
+      p.parseBracket()
     of newickWhitespace:
       p.parseWhitespace()
     of EndOfFile:
@@ -186,6 +187,9 @@ proc parseStart[T](p: var NewickParser[T]) =
     of '(':
       p.state = newickTopology
       break
+    of ',':
+      #TODO: Come up with informative error message
+      p.raiseError("Unexpected comma")
     of newickWhitespace:
       p.parseWhitespace()
     of '[':
@@ -204,10 +208,11 @@ proc parseStart[T](p: var NewickParser[T]) =
           p.bufpos.inc(3)
           p.raiseError("Expected \"]\"")
       else:
-        p.parseComment()
+        p.parseBracket()
     of EndOfFile:
-      p.state = newickEOF
-      break
+      # p.state = newickEOF
+      # break
+      p.raiseError("Unexpected end of file. No newick statment found.")
     else:
       p.state = newickLabel
       break
@@ -284,5 +289,15 @@ proc parseNewickFile*[T](treeSeq: var TreeSeq[T], path: string) =
   treeSeq.parseNewickStream(fs)
   fs.close()
 
+proc newTreeFromString*(str: string, typ: typedesc = void): Tree[typ] = 
+  result = newTree(typ) 
+  result.parseNewickString(str)
 
 
+
+
+
+
+
+
+    
