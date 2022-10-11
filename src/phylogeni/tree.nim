@@ -5,7 +5,8 @@ export algorithm.SortOrder
 type
   # NodeKind = enum nkLeaf, nkInner, nkRoot 
 
-  # TODO: Decide if this would be better
+  # TODO: Rewrite like this once this is possible in Nim. 
+  # See https://github.com/nim-lang/RFCs/issues/368 
   # Node*[T] = ref object 
   #   case kind: NodeKind
   #   of nkLeaf:
@@ -172,9 +173,7 @@ iterator inorder*[T](root: Node[T]): Node[T] =
       elif current.children.len == 0:
         current = nil
       else:
-        #TODO: use exceptions
-        echo "Tree must be strictly bifurcating for inorder traverse"
-        quit()
+        raise newException(TreeError, "Tree must be strictly bifurcating for inorder traverse")
     if stack.len > 0:
       var node = stack.pop()
       yield node
@@ -183,8 +182,7 @@ iterator inorder*[T](root: Node[T]): Node[T] =
       elif node.children.len == 0:
         current = nil
       else:
-        echo "Tree must be strictly bifurcating for inorder traverse"
-        quit()
+        raise newException(TreeError, "Tree must be strictly bifurcating for inorder traverse")
 
 iterator inorder*[T](tree: Tree[T]): Node[T] =  
   for i in tree.root.inorder():
@@ -203,7 +201,7 @@ iterator iterleaves*[T](tree: Tree[T]): Node[T] =
 
 proc ladderize*[T](root: Node[T], order: SortOrder = Ascending) =
   ## Ladderize subtree
-  # TODO: Reimplement with heap queue
+  # TODO: Should reimplement with heap queue
   var
     nodeDescendantCount = initTable[Node[T], int]()
   for node in root.postorder():
@@ -298,16 +296,15 @@ proc `$`*[T](node: Node[T]): string =
 # TODO: Implement these:
 # proc mrca*(tree: Tree, nodes: seq[Nodes]): Node =
   ## Return node of most recent common ancestor
-# proc treeHeight*(node: Node) =
+ 
 # proc delete*(node: Node) = 
   ## Remove only this node and not parent or children
+ 
 # proc extractTree*(node: Node): Tree =
   ## Returns rooted tree
+
+# proc calcTreeHeight*(node: Node): float = 
+  ## Calculatate length from node or root of tree to furthest leaf
+
 # proc findName*(name: string): Node =
-# proc maxDist*(tree: Tree): float =
-# proc midpointRoot*(tree: Tree) = 
-# proc rootOnOutgroup*(tree: Tree, node: Node) = 
-# proc prune_regraft*():
-# proc subtree_swap*():
-# proc subtree_prune_regraft*():
-# proc fixed_nodeheight_prune_regraft*():
+
