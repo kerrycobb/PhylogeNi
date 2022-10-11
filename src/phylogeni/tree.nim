@@ -217,8 +217,8 @@ proc ladderize*[T](root: Node[T], order: SortOrder = Ascending) =
       total += node.children.len
       nodeDescendantCount[node] = total
       node.children.sort(
-          cmp=proc(a, b: Node[T]): int = cmp(nodeDescendantCount[a], 
-          nodeDescendantCount[b]), order=order)
+          cmp=proc(a, b: Node[T]): int = cmp(nodeDescendantCount[b], 
+          nodeDescendantCount[a]), order=order)
 
 proc ladderize*[T](tree: Tree[T], order: SortOrder = Ascending) =
   ## Ladderize tree
