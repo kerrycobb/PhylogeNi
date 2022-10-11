@@ -1,6 +1,6 @@
 import algorithm, tables, hashes, strutils, sequtils
 
-export algorithm # TODO: Only export cmp enum
+export algorithm.SortOrder 
 
 type
   # NodeKind = enum nkLeaf, nkInner, nkRoot 
@@ -30,8 +30,6 @@ type
   Tree*[T] = ref object
     root*: Node[T]
     rooted*: bool
-
-  TreeSeq*[T] = seq[Tree[T]]
 
   TreeError* = object of CatchableError
 
