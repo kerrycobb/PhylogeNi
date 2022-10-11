@@ -1,5 +1,7 @@
 import algorithm, tables, hashes, strutils, sequtils
 
+export algorithm
+
 type
   # NodeKind = enum nkLeaf, nkInner, nkRoot 
 
@@ -32,6 +34,19 @@ type
   TreeSeq*[T] = seq[Tree[T]]
 
   TreeError* = object of CatchableError
+
+proc newTree*(typ: typedesc = void): Tree[typ] = Tree[typ]() 
+
+proc newNode*(label: string, length: float, typ: typedesc = void): Node[typ] = 
+  Node[typ](label:label, length:length) 
+
+proc treeFromString*(str: string, typ: typedesc = void): Tree[typ] = 
+  result = Tree[typ]()
+  result.parseNewickString(str)
+
+proc treeFromFile*(path: string, typ: typedesc = void): Tree[typ] = 
+  result = Tree[typ]()
+  result.parseNewickFile(path)
 
 proc hash*[T](n: Node[T]): Hash =
   #TODO Data is not hashed
@@ -188,13 +203,10 @@ iterator iterleaves*[T](tree: Tree[T]): Node[T] =
   for i in tree.root.iterleaves():
     yield i
 
-proc ladderize*[T](root: Node[T], ascending: bool = true) =
+proc ladderize*[T](root: Node[T], order: SortOrder = Ascending) =
   ## Ladderize subtree
   var
     nodeDescendantCount = initTable[Node[T], int]()
-    order: SortOrder
-  if ascending:
-    order = Ascending
   for node in root.postorder():
     if node.children.len == 0:
       nodeDescendantCount[node] = 0
@@ -208,9 +220,9 @@ proc ladderize*[T](root: Node[T], ascending: bool = true) =
           cmp=proc(a, b: Node[T]): int = cmp(nodeDescendantCount[a], 
           nodeDescendantCount[b]), order=order)
 
-proc ladderize*[T](tree: Tree[T], ascending: bool = true) =
+proc ladderize*[T](tree: Tree[T], order: SortOrder = Ascending) =
   ## Ladderize tree
-  tree.root.ladderize(ascending=ascending)
+  tree.root.ladderize(order)
 
 proc calcTreeLength*[T](tree: Tree[T]): float =
   ## Calculate total length of tree
@@ -254,7 +266,8 @@ proc get_ascii[T](node: Node[T], char1="-", showInternal=true): tuple[clines: se
       mid = int((lo+hi)/2)
       prefixes: seq[string] 
     prefixes.add(sequtils.repeat(pad, lo+1))
-    prefixes.add(sequtils.repeat(pa & "|", hi-lo-1))
+    if mids.len > 1:
+      prefixes.add(sequtils.repeat(pa & "|", hi-lo-1))
     prefixes.add(sequtils.repeat(pad, last-hi))
     prefixes[mid] = char1 & strutils.repeat("-", len-2) & prefixes[mid][^1]
     var new_results: seq[string]  
