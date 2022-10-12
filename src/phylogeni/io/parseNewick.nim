@@ -1,4 +1,9 @@
-import streams, lexbase, strformat, strutils 
+# TODO: Should rewrite this a bit to be more constraining and to catch more errors 
+# before Nim does, such as when reading "A,B;":. Also regret allowing annotations 
+# to occur anywhere which will be problematic if I make trees generic and 
+# parseAnnotation mixins get called before the label and length is parsed.
+
+import std/[streams, lexbase, strformat, strutils]
 import ../tree
 
 type 
@@ -6,6 +11,11 @@ type
 
   NewickState = enum
     newickStart, newickTopology, newickLabel, newickLength, newickEnd, newickEOF
+    # TODO: This might be a better way to track state in order to raise errors if
+    # a newick string doesn't have any parentheses. Low priority given how 
+    # unlikely that is. 
+    # newickStart, newickStartLabel, newickStartLength, newickStartTopology, 
+    # newickTopology, newickLabel, newickLength, newickEnd, newickEOF
   
   NewickParser*[T] = object of BaseLexer
     tree: Tree[T]
@@ -188,8 +198,7 @@ proc parseStart[T](p: var NewickParser[T]) =
       p.state = newickTopology
       break
     of ',':
-      #TODO: Come up with informative error message
-      p.raiseError("Unexpected comma")
+      p.raiseError("Unexpected comma. There can be only one root node.")
     of newickWhitespace:
       p.parseWhitespace()
     of '[':
