@@ -1,19 +1,19 @@
 import ../tree
 import std/strformat
 
-proc writeAnnotation(node: Node[string], str: var string) = 
+func writeAnnotation(node: Node[string], str: var string) = 
   str.add(fmt"[&{node.data}]")
 
-proc writeAnnotation(node: Node[void], str: var string) = 
+func writeAnnotation(node: Node[void], str: var string) = 
   discard
 
-proc writeNewickData[T](node: Node[T], str: var string) =
+func writeNewickData[T](node: Node[T], str: var string) =
   mixin writeAnnotation 
   str.add(node.label)
   str.add(fmt":{$node.length}")
   node.writeAnnotation(str)
 
-proc writeNewickString*[T](tree: Tree[T]): string =
+func writeNewickString*[T](tree: Tree[T]): string =
   ## Write newick string for Node object
   var str = ""
   if tree.rooted:
@@ -36,7 +36,7 @@ proc writeNewickString*[T](tree: Tree[T]): string =
   str.add(";")
   result = str
 
-proc writeNewickFile*[T](tree: Tree[T], filename:string) =
+func writeNewickFile*[T](tree: Tree[T], filename:string) =
   # Write a newick file for Node object
   var str = writeNewickString(tree)
   writeFile(filename, str)
