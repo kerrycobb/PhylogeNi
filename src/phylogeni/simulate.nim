@@ -1,33 +1,15 @@
-import random, math
+import std/[random, math]
 import ./tree
 
-# TODO: Simulate contained coalescent trees
 # TODO: Make option to take random number generator object as an option
-
-
-# Code for adding generic type to node
-# type
-#   BirthDeathData* = ref object
-#     name*: string
-#     length*: float
-#     extinct*: bool
-
-# proc writeNewickDataString*(data: BirthDeathData, str: var string) =
-#   str.add(data.name)
-#   str.add(":")
-#   str.add($data.length)
-#   str.add("[extinct=")
-#   str.add($data.extinct)
-#   str.add("]")
 
 proc randExp(l: float): float =
   -ln(rand(1.0))/l
 
-#TODO Why cant I remove the parameter fro unfiromPureBirth and just instead of T use void everywhere
-proc uniformPureBirth*(nTips: int, birthRate=1.0, dataType=void): Tree[dataType] =
-  ## Simulate tree under uniform pure birth process
+proc uniformPureBirth*(nTips: int, birthRate: float=1.0, typ=void): Tree[typ] =
+  ## Simulate tree under uniform pure birth process.
   var
-    t = Tree[dataType](root: Node[dataType]())
+    t = Tree[typ](root: Node[typ]())
     leaves = @[t.root]
   for i in 1 ..< nTips:
     var
@@ -38,7 +20,7 @@ proc uniformPureBirth*(nTips: int, birthRate=1.0, dataType=void): Tree[dataType]
       node.length += waitTime
     # Add descendant nodes to random leaf
     for i in 0..1:
-      var nd = Node[dataType]()
+      var nd = Node[typ]()
       leaves[rLeaf].addChild(nd)
       leaves.add(nd)
     # Remove previous random leaf from leaf list since it is now internal node
@@ -53,11 +35,10 @@ proc uniformPureBirth*(nTips: int, birthRate=1.0, dataType=void): Tree[dataType]
     inc += 1
   result = t
 
-proc uniformBirthDeath*(nTips: int, birthRate=1.0, deathRate=1.0, rerun=false,
-    dataType=void): Tree[dataType] =
-  ## Simulate tree under uniform birth death process
+proc uniformBirthDeath*(nTips: int, birthRate=1.0, deathRate=1.0, rerun=false, typ=void): Tree[typ] =
+  ## Simulate tree under uniform birth death process.
   var
-    t = Tree[dataType](root: Node[dataType]())
+    t = Tree[typ](root: Node[typ]())
     leaves = @[t.root]
   while true:
     if leaves.len() == nTips:
@@ -72,7 +53,7 @@ proc uniformBirthDeath*(nTips: int, birthRate=1.0, deathRate=1.0, rerun=false,
     if rand(1.0) < birthRate / (birthRate + deathRate):
       # Speciation event
       for i in 0..1:
-        var nd = Node[dataType]()
+        var nd = Node[typ]()
         leaves[rLeaf].addChild(nd)
         leaves.add(nd)
     else:
