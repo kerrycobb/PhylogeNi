@@ -29,12 +29,12 @@ runnableExamples:
       i.addChild(newNode("D", 1.0))
       i.addChild(newNode("E", 1.0))
   t.ladderize(Ascending)
+  echo t
 
   #    /C /-D
   # -A|   \-E
   #    \-B
 
-  echo t
   var str = t.writeNewickString()
   echo str
   # [&U]((D:1.0,E:1.0)C:1.0,B:1.0)A:1.0;
@@ -60,7 +60,7 @@ runnableExamples:
 ## 
 ## Generic Node Data
 ## =================
-## `Node` is a generic type so its data field can be any object.  
+## `Node` is a generic type which can have any object stored in the data field.  
 ## 
 ## One great feature of PhylogeNi is that you do not need to completely rewrite your  
 ## own parser/writer for custom data types when reading and writing a newick file or string.
