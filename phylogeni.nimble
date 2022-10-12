@@ -4,4 +4,4 @@ description = "A Nim library for working with phylogenetic trees."
 license     = "MIT"
 srcDir      = "src"
 
-requires "nim >= 1.4.0"
+requires "nim >= 1.6.0"
