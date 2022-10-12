@@ -1,26 +1,8 @@
-import algorithm, tables, hashes, strutils, sequtils
+import std/[algorithm, tables, hashes, strutils, sequtils]
 
 export algorithm.SortOrder 
 
 type
-  # NodeKind = enum nkLeaf, nkInner, nkRoot 
-
-  # TODO: Rewrite like this once this is possible in Nim. 
-  # See https://github.com/nim-lang/RFCs/issues/368 
-  # Node*[T] = ref object 
-  #   case kind: NodeKind
-  #   of nkLeaf:
-  #     parent*: Node[T]
-  #   of nkInner:
-  #     children*: seq[Node[T]]
-  #     parent*: Node[T]
-  #   of nkRoot:
-  #     children*: seq[Node[T]]
-  #   parent*: Node[T]
-  #   label*: string
-  #   length*: float
-  #   data*: T
-
   Node*[T] = ref object
     parent*: Node[T]
     children*: seq[Node[T]]
@@ -32,46 +14,50 @@ type
     root*: Node[T]
     rooted*: bool
 
+  TreeSeq*[T] = seq[Tree[T]]
+
   TreeError* = object of CatchableError
 
-proc newTree*(typ: typedesc = void): Tree[typ] = Tree[typ]() 
+func newTree*(typ: typedesc = void): Tree[typ] = Tree[typ]() 
+  ## Create new Tree.
 
-proc newNode*(label: string, length: float, typ: typedesc = void): Node[typ] = 
+func newNode*(label: string, length: float, typ: typedesc = void): Node[typ] = 
+  ## Create new Node.
   Node[typ](label:label, length:length) 
 
 proc treeFromString*(str: string, typ: typedesc = void): Tree[typ] = 
+  ## Read tree from string.
   result = Tree[typ]()
   result.parseNewickString(str)
 
 proc treeFromFile*(path: string, typ: typedesc = void): Tree[typ] = 
+  ## Read tree from file.
   result = Tree[typ]()
   result.parseNewickFile(path)
 
-proc hash*[T](n: Node[T]): Hash =
-  #TODO Data is not hashed
-  #Use concept hashable
+func hash*[T](n: Node[T]): Hash =
   result = n.label.hash !& n.length.hash
   result = !$result
 
-proc addChild*[T](parent: Node[T], newChild: Node[T]) =
-  ## Add child node to parent
+func addChild*[T](parent: Node[T], newChild: Node[T]) =
+  ## Add child node to parent.
   newChild.parent = parent
   parent.children.add(newChild)
 
-proc addSister*[T](node: Node[T], newSister: Node[T]) =
-  ## Add sister node
+func addSister*[T](node: Node[T], newSister: Node[T]) =
+  ## Add sister node.
   newSister.parent = node.parent
   node.parent.children.add(newSister)
 
-proc isLeaf*[T](node: Node[T]): bool =
-  ## Check if node is leaf
+func isLeaf*[T](node: Node[T]): bool =
+  ## Check if node is leaf.
   if node.children.len == 0:
     result = true
   else:
     result = false
 
-proc prune*[T](tree: Tree[T], node: Node[T]) =
-  ## Prune node from tree
+func prune*[T](tree: Tree[T], node: Node[T]) =
+  ## Prune node from tree.
   var parent = node.parent
   if node == tree.root:
     raise newException(TreeError, "Cannot prune root node")
@@ -87,13 +73,13 @@ proc prune*[T](tree: Tree[T], node: Node[T]) =
       child.parent = grandparent
       grandparent.children[grandparent.children.find(parent)] = child
 
-proc prune*[T](tree: Tree[T], nodes: seq[Node[T]]) =
-  ## Prune nodes from tree
+func prune*[T](tree: Tree[T], nodes: seq[Node[T]]) =
+  ## Prune nodes from tree.
   for i in nodes:
     tree.prune(i)
 
 iterator preorder*[T](root: Node[T]): Node[T] =
-  ## Preorder traverse
+  ## Preorder traverse.
   var stack = @[root]
   while stack.len > 0:
     var node = stack.pop()
@@ -101,12 +87,12 @@ iterator preorder*[T](root: Node[T]): Node[T] =
     yield node
 
 iterator preorder*[T](tree: Tree[T]): Node[T] =
-  ## Preorder traverse
+  ## Preorder traverse.
   for i in tree.root.preorder():
     yield i
 
 iterator postorder*[T](root: Node[T]): Node[T] =
-  ## Postorder traverse
+  ## Postorder traverse.
   var
     preStack = @[root]
     postStack: seq[Node[T]]
@@ -119,12 +105,12 @@ iterator postorder*[T](root: Node[T]): Node[T] =
     yield node
    
 iterator postorder*[T](tree: Tree[T]): Node[T] =
-  ## Postorder traverse
+  ## Postorder traverse.
   for i in tree.root.postorder():
     yield i
 
 iterator newickorder*[T](root: Node[T]): tuple[node:Node[T], firstVisit:bool] =
-  ## Newick order traverse
+  ## Newick order traverse.
   var stack: seq[tuple[node: Node[T], firstVisit: bool]]
   stack.add((node: root, firstVisit: false))
   stack.add((node: root, firstVisit: true))
@@ -146,7 +132,7 @@ iterator newickorder*[T](tree: Tree[T]): tuple[node:Node[T], firstVisit: bool] =
     yield i
 
 iterator levelorder*[T](root: Node[T]): Node[T] =
-  ## Levelorder traverse
+  ## Levelorder traverse.
   yield root
   var stack = root.children 
   while stack.len > 0:
@@ -156,12 +142,12 @@ iterator levelorder*[T](root: Node[T]): Node[T] =
     stack.add(node.children)
 
 iterator levelorder*[T](tree: Tree[T]): Node[T] =
-  ## Levelorder traverse
+  ## Levelorder traverse.
   for i in tree.root.levelorder():
     yield i
 
 iterator inorder*[T](root: Node[T]): Node[T] =
-  ## Inorder traverse
+  ## Inorder traverse. Tree must be strictly bifurcating.
   var
     stack: seq[Node[T]]
     current = root
@@ -185,22 +171,23 @@ iterator inorder*[T](root: Node[T]): Node[T] =
         raise newException(TreeError, "Tree must be strictly bifurcating for inorder traverse")
 
 iterator inorder*[T](tree: Tree[T]): Node[T] =  
+  ## Inorder traverse. Tree must be strictly bifurcating.
   for i in tree.root.inorder():
     yield i
 
 iterator iterleaves*[T](root: Node[T]): Node[T] =
-  ## Iter over leaves
+  ## Iter over leaves.
   for i in root.preorder():
     if i.is_leaf():
       yield i
 
 iterator iterleaves*[T](tree: Tree[T]): Node[T] =
-  ## Iter over leaves
+  ## Iter over leaves.
   for i in tree.root.iterleaves():
     yield i
 
-proc ladderize*[T](root: Node[T], order: SortOrder = Ascending) =
-  ## Ladderize subtree
+func ladderize*[T](root: Node[T], order: SortOrder = Ascending) =
+  ## Ladderize subtree.
   # TODO: Should reimplement with heap queue
   var
     nodeDescendantCount = initTable[Node[T], int]()
@@ -214,15 +201,15 @@ proc ladderize*[T](root: Node[T], order: SortOrder = Ascending) =
       total += node.children.len
       nodeDescendantCount[node] = total
       node.children.sort(
-          cmp=proc(a, b: Node[T]): int = cmp(nodeDescendantCount[b], 
+          cmp=func(a, b: Node[T]): int = cmp(nodeDescendantCount[b], 
           nodeDescendantCount[a]), order=order)
 
-proc ladderize*[T](tree: Tree[T], order: SortOrder = Ascending) =
-  ## Ladderize tree
+func ladderize*[T](tree: Tree[T], order: SortOrder = Ascending) =
+  ## Ladderize tree.
   tree.root.ladderize(order)
 
-proc calcTreeLength*[T](tree: Tree[T]): float =
-  ## Calculate total length of tree
+func calcTreeLength*[T](tree: Tree[T]): float =
+  ## Calculate total length of tree.
   var length = 0.0
   if tree.rooted:
     length += tree.root.length 
@@ -230,7 +217,8 @@ proc calcTreeLength*[T](tree: Tree[T]): float =
     length += i.length
   result = length
 
-proc get_ascii[T](node: Node[T], char1="-", showInternal=true): tuple[clines: seq[string], mid:int] = 
+func get_ascii[T](node: Node[T], char1="-", showInternal=true): tuple[clines: seq[string], mid:int] = 
+  ## Generates ascii string representation of tree.
   var 
     len = 3 
   if node.children.len == 0 or showInternal == true:
@@ -277,34 +265,36 @@ proc get_ascii[T](node: Node[T], char1="-", showInternal=true): tuple[clines: se
   else:
     result = (@[char1 & "-" & node.label], 0)
 
-proc ascii*[T](node: Node[T], char1="-", showInternal=true): string = 
+func ascii*[T](node: Node[T], char1="-", showInternal=true): string = 
+  ## Returns ascii string representation of tree.
   var (lines, mid) = get_ascii(node, char1, showInternal) 
   result = lines.join("\n")
 
-proc ascii*[T](tree: Tree[T], char1="-", showInternal=true): string = 
+func ascii*[T](tree: Tree[T], char1="-", showInternal=true): string = 
+  ## Returns ascii string representation of tree.
   var (lines, mid) = get_ascii(tree.root, char1, showInternal) 
   result = lines.join("\n")
 
-proc `$`*[T](tree: Tree[T]): string =  
+func `$`*[T](tree: Tree[T]): string =  
+  ## Returns ascii string representation of tree.
   result = ascii(tree.root) 
 
-proc `$`*[T](node: Node[T]): string = 
+func `$`*[T](node: Node[T]): string = 
+  ## Returns ascii string representation of tree.
   result = ascii(node) 
 
-
-
 # TODO: Implement these:
-# proc mrca*(tree: Tree, nodes: seq[Nodes]): Node =
+# func mrca*(tree: Tree, nodes: seq[Nodes]): Node =
   ## Return node of most recent common ancestor
  
-# proc delete*(node: Node) = 
+# func delete*(node: Node) = 
   ## Remove only this node and not parent or children
  
-# proc extractTree*(node: Node): Tree =
+# func extractTree*(node: Node): Tree =
   ## Returns rooted tree
 
-# proc calcTreeHeight*(node: Node): float = 
+# func calcTreeHeight*(node: Node): float = 
   ## Calculatate length from node or root of tree to furthest leaf
 
-# proc findName*(name: string): Node =
+# func findName*(name: string): Node =
 
