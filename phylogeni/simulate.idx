@@ -1,0 +1,2 @@
+uniformPureBirth	phylogeni/simulate.html#uniformPureBirth,int,float	simulate: uniformPureBirth(nTips: int; birthRate: float = 1.0; typ = void): Tree[typ]	
+uniformBirthDeath	phylogeni/simulate.html#uniformBirthDeath,int,float,float	simulate: uniformBirthDeath(nTips: int; birthRate = 1.0; deathRate = 1.0; rerun = false;\n                  typ = void): Tree[typ]	

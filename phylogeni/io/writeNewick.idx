@@ -1,0 +1,2 @@
+writeNewickString	phylogeni/io/writeNewick.html#writeNewickString,Tree[T]	writeNewick: writeNewickString[T](tree: Tree[T]): string	
+writeNewickFile	phylogeni/io/writeNewick.html#writeNewickFile,Tree[T],string	writeNewick: writeNewickFile[T](tree: Tree[T]; filename: string)	

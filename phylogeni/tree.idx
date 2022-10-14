@@ -1,0 +1,33 @@
+Node	phylogeni/tree.html#Node	tree: Node	
+Tree	phylogeni/tree.html#Tree	tree: Tree	
+TreeSeq	phylogeni/tree.html#TreeSeq	tree: TreeSeq	
+TreeError	phylogeni/tree.html#TreeError	tree: TreeError	
+newTree	phylogeni/tree.html#newTree,typedesc	tree: newTree(typ: typedesc = void): Tree[typ]	
+newNode	phylogeni/tree.html#newNode,string,float,typedesc	tree: newNode(label: string; length: float; typ: typedesc = void): Node[typ]	
+treeFromString	phylogeni/tree.html#treeFromString,string,typedesc	tree: treeFromString(str: string; typ: typedesc = void): Tree[typ]	
+treeFromFile	phylogeni/tree.html#treeFromFile,string,typedesc	tree: treeFromFile(path: string; typ: typedesc = void): Tree[typ]	
+hash	phylogeni/tree.html#hash,Node[T]	tree: hash[T](n: Node[T]): Hash	
+addChild	phylogeni/tree.html#addChild,Node[T],Node[T]	tree: addChild[T](parent: Node[T]; newChild: Node[T])	
+addSister	phylogeni/tree.html#addSister,Node[T],Node[T]	tree: addSister[T](node: Node[T]; newSister: Node[T])	
+isLeaf	phylogeni/tree.html#isLeaf,Node[T]	tree: isLeaf[T](node: Node[T]): bool	
+prune	phylogeni/tree.html#prune,Tree[T],Node[T]	tree: prune[T](tree: Tree[T]; node: Node[T])	
+prune	phylogeni/tree.html#prune,Tree[T],seq[Node[T]]	tree: prune[T](tree: Tree[T]; nodes: seq[Node[T]])	
+preorder	phylogeni/tree.html#preorder.i,Node[T]	tree: preorder[T](root: Node[T]): Node[T]	
+preorder	phylogeni/tree.html#preorder.i,Tree[T]	tree: preorder[T](tree: Tree[T]): Node[T]	
+postorder	phylogeni/tree.html#postorder.i,Node[T]	tree: postorder[T](root: Node[T]): Node[T]	
+postorder	phylogeni/tree.html#postorder.i,Tree[T]	tree: postorder[T](tree: Tree[T]): Node[T]	
+newickorder	phylogeni/tree.html#newickorder.i,Node[T]	tree: newickorder[T](root: Node[T]): tuple[node: Node[T], firstVisit: bool]	
+newickorder	phylogeni/tree.html#newickorder.i,Tree[T]	tree: newickorder[T](tree: Tree[T]): tuple[node: Node[T], firstVisit: bool]	
+levelorder	phylogeni/tree.html#levelorder.i,Node[T]	tree: levelorder[T](root: Node[T]): Node[T]	
+levelorder	phylogeni/tree.html#levelorder.i,Tree[T]	tree: levelorder[T](tree: Tree[T]): Node[T]	
+inorder	phylogeni/tree.html#inorder.i,Node[T]	tree: inorder[T](root: Node[T]): Node[T]	
+inorder	phylogeni/tree.html#inorder.i,Tree[T]	tree: inorder[T](tree: Tree[T]): Node[T]	
+iterleaves	phylogeni/tree.html#iterleaves.i,Node[T]	tree: iterleaves[T](root: Node[T]): Node[T]	
+iterleaves	phylogeni/tree.html#iterleaves.i,Tree[T]	tree: iterleaves[T](tree: Tree[T]): Node[T]	
+ladderize	phylogeni/tree.html#ladderize,Node[T],SortOrder	tree: ladderize[T](root: Node[T]; order: SortOrder = Ascending)	
+ladderize	phylogeni/tree.html#ladderize,Tree[T],SortOrder	tree: ladderize[T](tree: Tree[T]; order: SortOrder = Ascending)	
+calcTreeLength	phylogeni/tree.html#calcTreeLength,Tree[T]	tree: calcTreeLength[T](tree: Tree[T]): float	
+ascii	phylogeni/tree.html#ascii,Node[T],string	tree: ascii[T](node: Node[T]; char1 = &quot;-&quot;; showInternal = true): string	
+ascii	phylogeni/tree.html#ascii,Tree[T],string	tree: ascii[T](tree: Tree[T]; char1 = &quot;-&quot;; showInternal = true): string	
+`$`	phylogeni/tree.html#$,Tree[T]	tree: `$`[T](tree: Tree[T]): string	
+`$`	phylogeni/tree.html#$,Node[T]	tree: `$`[T](node: Node[T]): string	
