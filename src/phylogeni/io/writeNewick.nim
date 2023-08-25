@@ -36,7 +36,7 @@ func writeNewickString*[T](tree: Tree[T]): string =
   str.add(";")
   result = str
 
-func writeNewickFile*[T](tree: Tree[T], filename:string) =
+proc writeNewickFile*[T](tree: Tree[T], filename:string) =
   # Write a newick file for Node object
   var str = writeNewickString(tree)
   writeFile(filename, str)
