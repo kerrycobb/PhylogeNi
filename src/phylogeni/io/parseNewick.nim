@@ -297,16 +297,3 @@ proc parseNewickFile*[T](treeSeq: var TreeSeq[T], path: string) =
   var fs = newFileStream(path, fmRead)
   treeSeq.parseNewickStream(fs)
   fs.close()
-
-proc newTreeFromString*(str: string, typ: typedesc = void): Tree[typ] = 
-  result = newTree(typ) 
-  result.parseNewickString(str)
-
-
-
-
-
-
-
-
-    
