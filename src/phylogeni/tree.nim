@@ -1,3 +1,9 @@
+# TODO: Should Tree have rooted: property and should functions like treeHeight 
+# and treeLength have behavior that is dependent on this property?
+# Would make more sense if there was some way to enforce length of zero on the
+# root node no matter what which is not done currently.
+# Or should the Tree type be eliminated all together for simplicity. Is it useful?
+
 import std/[algorithm, tables, hashes, strutils, sequtils]
 
 export algorithm.SortOrder 
@@ -110,7 +116,7 @@ iterator postorder*[T](tree: Tree[T]): Node[T] =
     yield i
 
 iterator newickorder*[T](root: Node[T]): tuple[node:Node[T], firstVisit:bool] =
-  ## Newick order traverse.
+  ## Newick order traverse. All internal nodes are visited twice.
   var stack: seq[tuple[node: Node[T], firstVisit: bool]]
   stack.add((node: root, firstVisit: false))
   stack.add((node: root, firstVisit: true))
@@ -127,7 +133,7 @@ iterator newickorder*[T](root: Node[T]): tuple[node:Node[T], firstVisit:bool] =
             stack.add((child, true))
 
 iterator newickorder*[T](tree: Tree[T]): tuple[node:Node[T], firstVisit: bool] =
-  ## Newick order traverse
+  ## Newick order traverse. All internal nodes are visited twice.
   for i in tree.root.newickorder():
     yield i
 
@@ -188,7 +194,7 @@ iterator iterleaves*[T](tree: Tree[T]): Node[T] =
 
 func ladderize*[T](root: Node[T], order: SortOrder = Ascending) =
   ## Ladderize subtree.
-  # TODO: Should reimplement with heap queue
+  # TODO: Should reimplement with heap queue 
   var
     nodeDescendantCount = initTable[Node[T], int]()
   for node in root.postorder():
@@ -208,14 +214,35 @@ func ladderize*[T](tree: Tree[T], order: SortOrder = Ascending) =
   ## Ladderize tree.
   tree.root.ladderize(order)
 
+func calcTreeLength*[T](node: Node[T], includeRoot=true): float =
+  ## Calculate total length of tree.
+  result = 0.0
+  if includeRoot:
+    result += node.length
+  for child in node.children:
+    for i in child.preorder(): 
+      result += i.length 
+
 func calcTreeLength*[T](tree: Tree[T]): float =
   ## Calculate total length of tree.
-  var length = 0.0
   if tree.rooted:
-    length += tree.root.length 
-  for i in tree.preorder():
-    length += i.length
-  result = length
+    tree.root.calcTreeLength(includeRoot=true)
+  else:
+    tree.root.calcTreeLength(includeRoot=false)
+
+func treeHeight*[T](node: Node[T], includeRoot=true): float = 
+  ## Calculate the height of subtree. 
+  var maxHeight = 0.0
+  for child in node.children:
+    let childHeight = treeHeight(child)
+    maxHeight = max(maxHeight, childHeight) 
+  result = maxHeight + node.length
+  if not includeRoot:
+    result = result - node.length
+
+func treeHeight*[T](tree: Tree[T], includeRoot=true): float = 
+  ## Calculate the height of tree.
+  treeHeight(tree.root)
 
 func get_ascii[T](node: Node[T], char1="-", showInternal=true): tuple[clines: seq[string], mid:int] = 
   ## Generates ascii string representation of tree.
