@@ -2,7 +2,8 @@ import ./phylogeni/[
   tree,
   io/parseNewick,
   io/writeNewick,
-  simulate]
+  simulate
+  ]
 
 export tree,
        parseNewick,

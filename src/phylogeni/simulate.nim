@@ -1,16 +1,17 @@
 import std/[random, math]
 import ./tree
 
+# TODO: Make BirthDeath Simulator Work
 # TODO: Make option to take random number generator object as an option
 
 proc randExp(l: float): float =
   -ln(rand(1.0))/l
 
-proc uniformPureBirth*(nTips: int, birthRate: float=1.0, typ=void): Tree[typ] =
+proc uniformPureBirth*(nTips: int, birthRate: float=1.0, typ=void): Node[typ] =
   ## Simulate tree under uniform pure birth process.
   var
-    t = Tree[typ](root: Node[typ]())
-    leaves = @[t.root]
+    t = Node[typ]()
+    leaves = @[t]
   for i in 1 ..< nTips:
     var
       waitTime = randExp(float(leaves.len()) * birthRate)
@@ -35,11 +36,11 @@ proc uniformPureBirth*(nTips: int, birthRate: float=1.0, typ=void): Tree[typ] =
     inc += 1
   result = t
 
-proc uniformBirthDeath*(nTips: int, birthRate=1.0, deathRate=1.0, rerun=false, typ=void): Tree[typ] =
+proc uniformBirthDeath*(nTips: int, birthRate=1.0, deathRate=1.0, rerun=false, typ=void): Node[typ] =
   ## Simulate tree under uniform birth death process.
   var
-    t = Tree[typ](root: Node[typ]())
-    leaves = @[t.root]
+    t = Node[typ]()
+    leaves = @[t]
   while true:
     if leaves.len() == nTips:
       break
@@ -61,7 +62,7 @@ proc uniformBirthDeath*(nTips: int, birthRate=1.0, deathRate=1.0, rerun=false, t
       if leaves.len() == 1:
         # Rerun
         if rerun:
-          leaves.add(t.root)
+          leaves.add(t)
         # Or quit
         else:
           break

@@ -3,6 +3,8 @@
 # to occur anywhere which will be problematic if I make trees generic and 
 # parseAnnotation mixins get called before the label and length is parsed.
 
+# TODO: String annotation is not currently being parsed
+
 import std/[streams, lexbase, strformat, strutils]
 import ../tree
 
@@ -18,7 +20,7 @@ type
     # newickTopology, newickLabel, newickLength, newickEnd, newickEOF
   
   NewickParser*[T] = object of BaseLexer
-    tree: Tree[T]
+    root: Node[T]
     currNode*: Node[T]
     token: string 
     state: NewickState
@@ -182,7 +184,7 @@ proc parseTopology[T](p: var NewickParser[T]) =
     p.bufpos.inc()
     p.state = newickLabel
   of ';':
-    if p.currNode == p.tree.root:
+    if p.currNode == p.root:
       p.bufpos.inc()
       p.state = newickEnd
     else:
@@ -205,9 +207,11 @@ proc parseStart[T](p: var NewickParser[T]) =
       if p.buf[p.bufpos+1] == '&':
         case p.buf[p.bufpos+2]
         of 'r', 'R': 
-          p.tree.rooted = true
+          # p.tree.rooted = true
+          discard
         of 'u', 'U':
-          p.tree.rooted = false
+          # p.tree.rooted = false
+          discard
         else:
           p.bufpos.inc(2)
           p.raiseError(&"Unexpected character \"{p.buf[p.bufpos]}\"") 
@@ -243,57 +247,57 @@ proc parseTree[T](p: var NewickParser[T]) =
     of newickEOF:
       break
 
-proc parseNewickStream*[T](tree: var Tree[T], stream: Stream) =
+proc parseNewickStream*(stream: Stream, typ: typedesc = void): Node[typ] =
   ## Parse a newick stream
   var
-    p = NewickParser[T]()
-  p.tree = tree 
-  p.tree.root = Node[T]()
-  p.currNode = p.tree.root
+    p = NewickParser[typ]()
+  p.root = Node[typ]()
+  p.currNode = p.root
   p.open(stream)
   p.parseTree()
   p.close()
+  result = p.root 
 
-proc parseNewickStream*[T](treeSeq: var TreeSeq[T], stream: Stream) =
-  ## Parse a newick stream
-  var
-    p = NewickParser[T]()
-  p.open(stream)
-  while true:
-    p.state = newickStart
-    p.tree = Tree[T]() 
-    p.tree.root = Node[T]()
-    p.currNode = p.tree.root
-    p.parseTree()
-    case p.state
-    of newickEOF:
-      break
-    of newickEnd:
-      treeSeq.add(p.tree)
-    else:
-      p.raiseError("Internal error, report possible bug") 
-  p.close()
+# proc parseNewickStream*[T](treeSeq: var TreeSeq[T], stream: Stream) =
+#   ## Parse a newick stream
+#   var
+#     p = NewickParser[T]()
+#   p.open(stream)
+#   while true:
+#     p.state = newickStart
+#     p.tree = Tree[T]() 
+#     p.tree.root = Node[T]()
+#     p.currNode = p.tree.root
+#     p.parseTree()
+#     case p.state
+#     of newickEOF:
+#       break
+#     of newickEnd:
+#       treeSeq.add(p.tree)
+#     else:
+#       p.raiseError("Internal error, report possible bug") 
+#   p.close()
 
-proc parseNewickString*[T](tree: var Tree[T], str: string) =
+proc parseNewickString*(str: string, typ: typedesc = void): Node[typ] =
   ## Parse a newick string
   var ss = newStringStream(str)
-  tree.parseNewickStream(ss)
+  result = parseNewickStream(ss, typ)
   ss.close()
 
-proc parseNewickString*[T](treesSeq: var TreeSeq[T], str: string) =
-  ## Parse a newick string
-  var ss = newStringStream(str)
-  treesSeq.parseNewickStream(ss)
-  ss.close()
+# proc parseNewickString*[T](treesSeq: var TreeSeq[T], str: string) =
+#   ## Parse a newick string
+#   var ss = newStringStream(str)
+#   treesSeq.parseNewickStream(ss)
+#   ss.close()
 
-proc parseNewickFile*[T](tree: var Tree[T], path: string) =
+proc parseNewickFile*(path: string, typ: typedesc = void): Node[typ] =
   ## Parse a newick file
   var fs = newFileStream(path, fmRead)
-  tree.parseNewickStream(fs)
+  result = parseNewickStream(fs, typ)
   fs.close()
 
-proc parseNewickFile*[T](treeSeq: var TreeSeq[T], path: string) =
-  ## Parse a newick file
-  var fs = newFileStream(path, fmRead)
-  treeSeq.parseNewickStream(fs)
-  fs.close()
+# proc parseNewickFile*[T](treeSeq: var TreeSeq[T], path: string) =
+#   ## Parse a newick file
+#   var fs = newFileStream(path, fmRead)
+#   treeSeq.parseNewickStream(fs)
+#   fs.close()
