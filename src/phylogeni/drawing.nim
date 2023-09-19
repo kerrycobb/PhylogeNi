@@ -1,3 +1,6 @@
+# Inherit from Node and only borrow the necessary procs
+# Leave out or change some setters and getters
+
 import ./tree
 
 import phylogeni
@@ -7,6 +10,15 @@ type
     x: float # Horizontal position of node, equivalent to node height
     y: float # Vertical position of node
     data: T 
+
+# proc x*[T](n: DrawNode[T]): float = 
+#   result = n.x
+
+# proc y*[T](n: DrawNode[T]): float = 
+#   result = n.y
+
+# proc data*[T](n: DrawNode[T]): T = 
+#   result = n.data
 
 template toClosure*(i): auto =
   ## Wrap an inline iterator in a first-class closure iterator.

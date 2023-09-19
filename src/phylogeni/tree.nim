@@ -1,3 +1,6 @@
+#TODO: Make Node attributes private and make setters and getters
+# or make Node a concept
+
 import std/[algorithm, tables, hashes, strutils, sequtils]
 
 export algorithm.SortOrder 
