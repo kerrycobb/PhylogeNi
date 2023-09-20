@@ -147,7 +147,9 @@ window.addEventListener('DOMContentLoaded', main);
 
   </ul>
   <ul class="simple nested-toc-section">calcTreeLength
-      <li><a class="reference" href="#calcTreeLength%2CTree%5BT%5D"
+      <li><a class="reference" href="#calcTreeLength%2CNode%5BT%5D"
+    title="calcTreeLength[T](node: Node[T]; includeRoot = true): float">calcTreeLength[T](node: Node[T]; includeRoot = true): float</a></li>
+  <li><a class="reference" href="#calcTreeLength%2CTree%5BT%5D"
     title="calcTreeLength[T](tree: Tree[T]): float">calcTreeLength[T](tree: Tree[T]): float</a></li>
 
   </ul>
@@ -193,6 +195,13 @@ window.addEventListener('DOMContentLoaded', main);
   <ul class="simple nested-toc-section">treeFromString
       <li><a class="reference" href="#treeFromString%2Cstring%2Ctypedesc"
     title="treeFromString(str: string; typ: typedesc = void): Tree[typ]">treeFromString(str: string; typ: typedesc = void): Tree[typ]</a></li>
+
+  </ul>
+  <ul class="simple nested-toc-section">treeHeight
+      <li><a class="reference" href="#treeHeight%2CNode%5BT%5D"
+    title="treeHeight[T](node: Node[T]; includeRoot = true): float">treeHeight[T](node: Node[T]; includeRoot = true): float</a></li>
+  <li><a class="reference" href="#treeHeight%2CTree%5BT%5D"
+    title="treeHeight[T](tree: Tree[T]; includeRoot = true): float">treeHeight[T](tree: Tree[T]; includeRoot = true): float</a></li>
 
   </ul>
 
@@ -274,9 +283,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L6"
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L12"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L6" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L12" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -289,9 +298,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L13"
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L19"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L13" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L19" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -301,9 +310,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L19"
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L25"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L19" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L25" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -313,9 +322,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L17"
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L23"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L17" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L23" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -330,9 +339,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Returns ascii string representation of tree.
 &nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L282"
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L309"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L282" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L309" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -342,9 +351,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Returns ascii string representation of tree.
 &nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L278"
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L305"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L278" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L305" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -354,9 +363,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Add child node to parent.
 &nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L42"
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L48"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L42" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L48" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -366,9 +375,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Add sister node.
 &nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L47"
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L53"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L47" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L53" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -378,9 +387,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Returns ascii string representation of tree.
 &nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L268"
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L295"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L268" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L295" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -390,9 +399,21 @@ class="link-seesrc" target="_blank">Source</a>
 
 Returns ascii string representation of tree.
 &nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L273"
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L300"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L273" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L300" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
+<div id="calcTreeLength,Node[T]">
+<dt><pre><span class="Keyword">func</span> <a href="#calcTreeLength%2CNode%5BT%5D"><span class="Identifier">calcTreeLength</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <a href="tree.html#Node"><span class="Identifier">Node</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">;</span> <span class="Identifier">includeRoot</span> <span class="Other">=</span> <span class="Identifier">true</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">float</span></pre></dt>
+<dd>
+
+Calculate total length of tree.
+&nbsp;&nbsp;<a
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L217"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L217" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -402,9 +423,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Calculate total length of tree.
 &nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L211"
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L226"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L211" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L226" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -414,9 +435,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L38"
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L44"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L38" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L44" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -426,9 +447,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Check if node is leaf.
 &nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L52"
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L58"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L52" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L58" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -438,9 +459,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Ladderize subtree.
 &nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L189"
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L195"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L189" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L195" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -450,9 +471,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Ladderize tree.
 &nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L207"
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L213"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L207" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L213" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -462,9 +483,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Create new Node.
 &nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L24"
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L30"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L24" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L30" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -474,9 +495,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Create new Tree.
 &nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L21"
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L27"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L21" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L27" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -486,9 +507,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Prune node from tree.
 &nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L59"
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L65"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L59" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L65" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -498,9 +519,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Prune nodes from tree.
 &nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L76"
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L82"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L76" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L82" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -510,9 +531,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Read tree from file.
 &nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L33"
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L39"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L33" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L39" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -522,9 +543,33 @@ class="link-seesrc" target="_blank">Source</a>
 
 Read tree from string.
 &nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L28"
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L34"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L28" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L34" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
+<div id="treeHeight,Node[T]">
+<dt><pre><span class="Keyword">func</span> <a href="#treeHeight%2CNode%5BT%5D"><span class="Identifier">treeHeight</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <a href="tree.html#Node"><span class="Identifier">Node</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">;</span> <span class="Identifier">includeRoot</span> <span class="Other">=</span> <span class="Identifier">true</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">float</span></pre></dt>
+<dd>
+
+Calculate the height of subtree. 
+&nbsp;&nbsp;<a
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L233"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L233" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
+<div id="treeHeight,Tree[T]">
+<dt><pre><span class="Keyword">func</span> <a href="#treeHeight%2CTree%5BT%5D"><span class="Identifier">treeHeight</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">tree</span><span class="Other">:</span> <a href="tree.html#Tree"><span class="Identifier">Tree</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">;</span> <span class="Identifier">includeRoot</span> <span class="Other">=</span> <span class="Identifier">true</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">float</span></pre></dt>
+<dd>
+
+Calculate the height of tree.
+&nbsp;&nbsp;<a
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L243"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L243" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -539,9 +584,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Inorder traverse. Tree must be strictly bifurcating.
 &nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L149"
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L155"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L149" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L155" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -551,26 +596,14 @@ class="link-seesrc" target="_blank">Source</a>
 
 Inorder traverse. Tree must be strictly bifurcating.
 &nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L173"
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L179"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L173" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L179" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="iterleaves.i,Node[T]">
 <dt><pre><span class="Keyword">iterator</span> <a href="#iterleaves.i%2CNode%5BT%5D"><span class="Identifier">iterleaves</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">root</span><span class="Other">:</span> <a href="tree.html#Node"><span class="Identifier">Node</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <a href="tree.html#Node"><span class="Identifier">Node</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span></pre></dt>
-<dd>
-
-Iter over leaves.
-&nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L178"
-class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L178" class="link-seesrc" target="_blank" >Edit</a>
-
-</dd>
-</div>
-<div id="iterleaves.i,Tree[T]">
-<dt><pre><span class="Keyword">iterator</span> <a href="#iterleaves.i%2CTree%5BT%5D"><span class="Identifier">iterleaves</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">tree</span><span class="Other">:</span> <a href="tree.html#Tree"><span class="Identifier">Tree</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <a href="tree.html#Node"><span class="Identifier">Node</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span></pre></dt>
 <dd>
 
 Iter over leaves.
@@ -581,15 +614,27 @@ class="link-seesrc" target="_blank">Source</a>
 
 </dd>
 </div>
+<div id="iterleaves.i,Tree[T]">
+<dt><pre><span class="Keyword">iterator</span> <a href="#iterleaves.i%2CTree%5BT%5D"><span class="Identifier">iterleaves</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">tree</span><span class="Other">:</span> <a href="tree.html#Tree"><span class="Identifier">Tree</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <a href="tree.html#Node"><span class="Identifier">Node</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span></pre></dt>
+<dd>
+
+Iter over leaves.
+&nbsp;&nbsp;<a
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L190"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L190" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
 <div id="levelorder.i,Node[T]">
 <dt><pre><span class="Keyword">iterator</span> <a href="#levelorder.i%2CNode%5BT%5D"><span class="Identifier">levelorder</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">root</span><span class="Other">:</span> <a href="tree.html#Node"><span class="Identifier">Node</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <a href="tree.html#Node"><span class="Identifier">Node</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span></pre></dt>
 <dd>
 
 Levelorder traverse.
 &nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L134"
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L140"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L134" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L140" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -599,9 +644,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Levelorder traverse.
 &nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L144"
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L150"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L144" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L150" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -609,11 +654,11 @@ class="link-seesrc" target="_blank">Source</a>
 <dt><pre><span class="Keyword">iterator</span> <a href="#newickorder.i%2CNode%5BT%5D"><span class="Identifier">newickorder</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">root</span><span class="Other">:</span> <a href="tree.html#Node"><span class="Identifier">Node</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Keyword">tuple</span><span class="Other">[</span><span class="Identifier">node</span><span class="Other">:</span> <a href="tree.html#Node"><span class="Identifier">Node</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">firstVisit</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">]</span></pre></dt>
 <dd>
 
-Newick order traverse.
+Newick order traverse. All internal nodes are visited twice.
 &nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L112"
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L118"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L112" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L118" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -621,11 +666,11 @@ class="link-seesrc" target="_blank">Source</a>
 <dt><pre><span class="Keyword">iterator</span> <a href="#newickorder.i%2CTree%5BT%5D"><span class="Identifier">newickorder</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">tree</span><span class="Other">:</span> <a href="tree.html#Tree"><span class="Identifier">Tree</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Keyword">tuple</span><span class="Other">[</span><span class="Identifier">node</span><span class="Other">:</span> <a href="tree.html#Node"><span class="Identifier">Node</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">firstVisit</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">]</span></pre></dt>
 <dd>
 
-Newick order traverse
+Newick order traverse. All internal nodes are visited twice.
 &nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L129"
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L135"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L129" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L135" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -635,9 +680,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Postorder traverse.
 &nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L94"
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L100"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L94" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L100" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -647,9 +692,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Postorder traverse.
 &nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L107"
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L113"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L107" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L113" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -659,9 +704,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Preorder traverse.
 &nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L81"
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L87"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L81" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L87" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -671,9 +716,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Preorder traverse.
 &nbsp;&nbsp;<a
-href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L89"
+href="https://github.com/kerrycobb/PhylogeNi/tree/main/src/phylogeni/tree.nim#L95"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L89" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/kerrycobb/PhylogeNi/edit/devel/src/phylogeni/tree.nim#L95" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -687,7 +732,7 @@ class="link-seesrc" target="_blank">Source</a>
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2023-08-25 16:33:37 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2023-09-20 16:29:50 UTC</small>
       </div>
     </div>
   </div>

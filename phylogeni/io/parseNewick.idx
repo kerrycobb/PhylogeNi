@@ -6,4 +6,3 @@ parseNewickString	phylogeni/io/parseNewick.html#parseNewickString,Tree[T],string
 parseNewickString	phylogeni/io/parseNewick.html#parseNewickString,TreeSeq[T],string	parseNewick: parseNewickString[T](treesSeq: var TreeSeq[T]; str: string)	
 parseNewickFile	phylogeni/io/parseNewick.html#parseNewickFile,Tree[T],string	parseNewick: parseNewickFile[T](tree: var Tree[T]; path: string)	
 parseNewickFile	phylogeni/io/parseNewick.html#parseNewickFile,TreeSeq[T],string	parseNewick: parseNewickFile[T](treeSeq: var TreeSeq[T]; path: string)	
-newTreeFromString	phylogeni/io/parseNewick.html#newTreeFromString,string,typedesc	parseNewick: newTreeFromString(str: string; typ: typedesc = void): Tree[typ]	

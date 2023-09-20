@@ -26,7 +26,10 @@ iterleaves	phylogeni/tree.html#iterleaves.i,Node[T]	tree: iterleaves[T](root: No
 iterleaves	phylogeni/tree.html#iterleaves.i,Tree[T]	tree: iterleaves[T](tree: Tree[T]): Node[T]	
 ladderize	phylogeni/tree.html#ladderize,Node[T],SortOrder	tree: ladderize[T](root: Node[T]; order: SortOrder = Ascending)	
 ladderize	phylogeni/tree.html#ladderize,Tree[T],SortOrder	tree: ladderize[T](tree: Tree[T]; order: SortOrder = Ascending)	
+calcTreeLength	phylogeni/tree.html#calcTreeLength,Node[T]	tree: calcTreeLength[T](node: Node[T]; includeRoot = true): float	
 calcTreeLength	phylogeni/tree.html#calcTreeLength,Tree[T]	tree: calcTreeLength[T](tree: Tree[T]): float	
+treeHeight	phylogeni/tree.html#treeHeight,Node[T]	tree: treeHeight[T](node: Node[T]; includeRoot = true): float	
+treeHeight	phylogeni/tree.html#treeHeight,Tree[T]	tree: treeHeight[T](tree: Tree[T]; includeRoot = true): float	
 ascii	phylogeni/tree.html#ascii,Node[T],string	tree: ascii[T](node: Node[T]; char1 = &quot;-&quot;; showInternal = true): string	
 ascii	phylogeni/tree.html#ascii,Tree[T],string	tree: ascii[T](tree: Tree[T]; char1 = &quot;-&quot;; showInternal = true): string	
 `$`	phylogeni/tree.html#$,Tree[T]	tree: `$`[T](tree: Tree[T]): string	
