@@ -10,7 +10,6 @@ export algorithm.SortOrder # Is this a bad practice? Is there an alternative?
 
 func prune*(node: TraversableNode) =
   ## Prune branch from its tree.
-  #TODO: Go through and fully delete descendant node so they can't be accessed later?
   if node.parent == nil:
     raise newException(TreeError, "Cannot prune root node")
   var parent = node.parent

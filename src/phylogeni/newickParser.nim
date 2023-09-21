@@ -1,3 +1,5 @@
+#TODO: Should rewrite this using a parser library, it has gotten too complex
+
 import ./concepts, ./traverse
 import std/[streams, lexbase, strformat, strutils]
 
@@ -50,7 +52,7 @@ proc parseWhitespace(p: var NewickParser, skip=true) =
 # # proc parseAnnotation(p: var NewickParser[void], annotation: string) = 
 # #   discard
 
-proc parseBracket(p: var NewickParser, showComments=false) = 
+proc parseBracket(p: var NewickParser) = 
   # TODO: handle unexpected end of file and newick statement
   mixin parseAnnotation
   p.token = ""
@@ -69,11 +71,8 @@ proc parseBracket(p: var NewickParser, showComments=false) =
     if p.annotationState:
       # p.parseAnnotation(p.token[1..^1])
       p.annotationState = false
-  else:
-    if showComments:
-      echo p.token 
 
-proc parseLength(p: var NewickParser) =     
+proc parseLength[T](p: var NewickParser[T]) =     
   #TODO: Determine if length is float or int for nodetype and convert string appropriately
   var parseLength = true
   while true:
@@ -121,7 +120,6 @@ proc parseLabel(p: var NewickParser) =
     of '[':
       p.state = newickAnnotation
       break
-    #   p.parseBracket()
     of newickWhitespace:
       p.parseWhitespace()
     of EndOfFile:
@@ -164,7 +162,12 @@ proc parseLabel(p: var NewickParser) =
       else:
         p.raiseError(&"Unexpected character \"{p.buf[p.bufpos]}\"") 
 
-proc parseData(p: var NewickParser) = 
+# proc skipLabel(p: var NewickParser) = 
+#   while true:
+#     case p.buf[p.bufpos]
+#     of 
+
+proc parseData[T](p: var NewickParser[T]) = 
   var annotation = ""
   p.bufpos.inc
   while true:
@@ -180,7 +183,7 @@ proc parseData(p: var NewickParser) =
   when typeof(p.currNode) is ReadableAnnotatedNode:
     p.currNode.parseAnnotation(annotation)
 
-proc parseTopology(p: var NewickParser, T: typedesc[TraversableNode]) = 
+proc parseTopology[T](p: var NewickParser[T]) = 
   # Parse newick tree 
   case p.buf[p.bufpos]
   of '(':
@@ -218,22 +221,23 @@ proc parseStart(p: var NewickParser) =
     of newickWhitespace:
       p.parseWhitespace()
     of '[':
-      if p.buf[p.bufpos+1] == '&':
-        case p.buf[p.bufpos+2]
-        of 'r', 'R': 
-          discard
-        of 'u', 'U':
-          discard
-        else:
-          p.bufpos.inc(2)
-          p.raiseError(&"Unexpected character \"{p.buf[p.bufpos]}\"") 
-        if p.buf[p.bufpos+3] == ']':
-          p.bufpos.inc(4)
-        else:
-          p.bufpos.inc(3)
-          p.raiseError("Expected \"]\"")
-      else:
-        p.parseBracket()
+      p.parseBracket()
+      # if p.buf[p.bufpos+1] == '&':
+      #   case p.buf[p.bufpos+2]
+      #   of 'r', 'R': 
+      #     discard
+      #   of 'u', 'U':
+      #     discard
+      #   else:
+      #     p.bufpos.inc(2)
+      #     p.raiseError(&"Unexpected character \"{p.buf[p.bufpos]}\"") 
+      #   if p.buf[p.bufpos+3] == ']':
+      #     p.bufpos.inc(4)
+      #   else:
+      #     p.bufpos.inc(3)
+      #     p.raiseError("Expected \"]\"")
+      # else:
+        # p.parseBracket()
     of EndOfFile:
       # p.state = newickEOF
       # break
@@ -242,16 +246,23 @@ proc parseStart(p: var NewickParser) =
       p.state = newickLabel
       break
 
-proc parseTree(p: var NewickParser, T: typedesc[TraversableNode]) = 
-  p.parseWhitespace()
+proc parseNewickStream*(stream: Stream, T: typedesc[TraversableNode]): T =
+  ## Parse a newick stream
+  var p = NewickParser[T]()
+  p.root = new(T)
+  p.currNode = p.root
+  p.open(stream)
   while true:
     case p.state
     of newickStart:
       p.parseStart()
     of newickTopology:
-      p.parseTopology(T)
+      p.parseTopology()
     of newickLabel: 
+      # when T is LabeledNode:
       p.parseLabel()
+      # when not T is LabeledNode:
+        # p.skipLabel()
     of newickLength:
       p.parseLength()
     of newickAnnotation:
@@ -260,20 +271,14 @@ proc parseTree(p: var NewickParser, T: typedesc[TraversableNode]) =
       break
     of newickEOF:
       break
-
-proc parseNewickStream*(stream: Stream, T: typedesc[TraversableNode]): T =
-  ## Parse a newick stream
-  var
-    p = NewickParser[T]()
-  p.root = new(T)
-  p.currNode = p.root
-  p.open(stream)
-  p.parseTree(T)
   p.close()
   result = p.root 
 
-proc parseNewickString*(str: string, T: typedesc[TraversableNode]): T =
+proc parseNewickString*(T: typedesc[TraversableNode], str: string): T =
   ## Parse a newick string
   var ss = newStringStream(str)
   result = parseNewickStream(ss, T) 
   ss.close()
+
+
+  
