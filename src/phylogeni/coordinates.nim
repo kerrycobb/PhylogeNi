@@ -41,8 +41,6 @@ proc getCoords*[T: LengthNode](root: T, branchLengthScaling=1.0, branchSep=1.0):
   var 
     leafY = 0.0
     currNode = CoordNode[T](node: new(T)) # Placeholder, is parent to root node of new tree
-    # TODO: Will this work?:
-    # currNode = CoordNode[T]() # Placeholder, is parent to root node of new tree
   for i in root.newickorder:
     case i.state
     of ascendingTree:

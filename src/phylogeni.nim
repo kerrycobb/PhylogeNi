@@ -2,7 +2,7 @@ import ./phylogeni/[
   concepts,
   coordinates,
   manipulate,
-  newickParser,
+  newickParser2,
   newickWriter,
   traverse]
 
@@ -10,6 +10,6 @@ export
   concepts,
   coordinates,
   manipulate,
-  newickParser,
+  newickParser2,
   newickWriter,
   traverse

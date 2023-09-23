@@ -140,15 +140,17 @@ func treeHeight*(node: LengthNode): float =
 
 
 
+###############################
+# Data Node
 type
-  ReadableAnnotatedNode* = concept n
+  ReadableDataNode* = concept n
     n is TraversableNode
-    n.parseAnnotation(string)
+    n.parseNewickData(string)
 
 type
-  WritableAnnotatedNode* = concept n
+  WritableDataNode* = concept n
     n is TraversableNode
-    n.writeAnnotation is string
+    n.writeNewickData is string
 
 
 
