@@ -141,7 +141,7 @@ func treeHeight*(node: LengthNode): float =
 
 
 ###############################
-# Data Node
+# 
 type
   ReadableDataNode* = concept n
     n is TraversableNode
@@ -152,6 +152,14 @@ type
     n is TraversableNode
     n.writeNewickData is string
 
+# TODO: would this be redundant?
+# TODO: could it improve clarity?
+# For use by procs in manipulate module
+# type 
+#   MutableNode* = concept n
+#     n is TraversableNode
+#     n.parent #TODO: how to confirm if this is mutable 
+#     n.children # TODO: how to confirm that this is mutable 
 
 
 
