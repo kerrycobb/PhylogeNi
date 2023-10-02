@@ -15,12 +15,3 @@ export
   newickWriter,
   nodeTypes,
   traverse
-
-## =========
-## PhylogeNi
-## =========
-## 
-## PhylogeNi is a Nim library for working with phylogenetic trees.
-##  
-
-# runnableExamples:

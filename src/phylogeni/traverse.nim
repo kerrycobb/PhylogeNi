@@ -2,7 +2,7 @@ import ./concepts
 import std/algorithm
 
 iterator preorder*(root: TraversableNode): TraversableNode =
-  ## Preorder traverse.
+  ## Preorder traverse of subtree.
   var stack = @[root]
   while stack.len > 0:
     var node = stack.pop()
@@ -10,7 +10,7 @@ iterator preorder*(root: TraversableNode): TraversableNode =
     yield node
 
 iterator postorder*(root: TraversableNode): TraversableNode =
-  ## Postorder traverse.
+  ## Postorder traverse of subtree.
   var
     preStack = @[root]
     postStack: seq[TraversableNode]
@@ -23,7 +23,7 @@ iterator postorder*(root: TraversableNode): TraversableNode =
     yield node
 
 iterator levelorder*(root: TraversableNode): TraversableNode =
-  ## Levelorder traverse.
+  ## Levelorder traverse of subtree.
   yield root
   var stack = root.children 
   while stack.len > 0:
@@ -33,10 +33,19 @@ iterator levelorder*(root: TraversableNode): TraversableNode =
     stack.add(node.children)
 
 iterator iterleaves*(root: TraversableNode): TraversableNode =
-  ## Iter over leaves.
+  ## Iter over leaves of subtree.
   for i in root.preorder():
     if i.is_leaf():
       yield i
+
+iterator iterAncestors*(node: TraversableNode): TraversableNode =
+  var curr = node
+  while true:
+    if curr.parent != nil:
+      yield curr.parent
+      curr = curr.parent
+    else:
+      break
 
 type
   NewickOrderState* = enum 

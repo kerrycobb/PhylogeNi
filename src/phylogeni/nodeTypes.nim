@@ -22,6 +22,9 @@ proc addChild*[T](parent, child: DataNode[T]) =
 
 
 # Void Data
+type
+  NHNode* = DataNode[void]
+
 proc parseNewickData*[T](n: DataNode[void], data: string) = 
   discard
 
@@ -38,6 +41,7 @@ proc writeNewickData*[T](n: DataNode[string]): string =
 # NHX Data
 type 
   NHXData* = OrderedTable[string, string]
+  NHXNode* = DataNode[NHXData]
 
 # TODO: Make object variant to use as value for table and modify parser to 
 # recognize and assign

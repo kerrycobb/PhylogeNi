@@ -13,14 +13,23 @@ func prune*(node: TraversableNode) =
   if node.parent == nil:
     raise newException(TreeError, "Cannot prune root node")
   var parent = node.parent
-  parent.children.delete(parent.children.find(node))
-  if parent.children.len() == 1:
-    var child = parent.children[0]
-    parent.children = child.children
-    when node is LengthNode: 
-      parent.length += child.length 
-    when node is LabeledNode:
-      parent.label = child.label
+  node.parent = nil
+  case parent.children.len:
+  of 1:
+    parent.children.setLen(0)
+  of 2:
+    if parent.children.len == 2:
+      var gparent = parent.parent
+      parent.children.delete(parent.children.find(node))
+      let pos = gparent.children.find(parent)  
+      gparent.children[pos] = parent.children[0] 
+      parent.children[0].parent = gparent
+      when node is LengthNode: 
+        parent.children[0].length += node.length 
+      gparent = nil
+      parent.children.setLen(0) 
+  else:
+    parent.children.delete(parent.children.find(node))
 
 type
   LadderNode[T] = ref object

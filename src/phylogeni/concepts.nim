@@ -23,24 +23,20 @@ func isRoot*(node: TraversableNode): bool =
   else:
     result = false
 
-func getAncestors*(node: TraversableNode): seq[TraversableNode] =
-  var curr = node
-  while true:
-    if curr.parent != nil:
-      result.add(curr.parent)
-      curr = curr.parent
-    else:
-      break
+# func getAncestors*(node: TraversableNode): seq[TraversableNode] =
+#   # TODO: Not working
+#   var curr = node
+#   while true:
+#     if curr.parent != nil:
+#       result.add(curr.parent)
+#       curr = curr.parent
+#     else:
+#       break
 
-func getMRCA*(a, b: TraversableNode): TraversableNode = 
+proc getMRCA*(a, b: TraversableNode): TraversableNode = 
   ## Get the most recent common ancestor of two nodes.
-  # TODO: I think this could be faster adding the elements of the shorter list to a 
-  # hash set and then checking if the elements of the other list belong to that set
-  let 
-    aAncestors = a.getAncestors
-    bAncestors = b.getAncestors
-  for i in aAncestors:
-    for j in bAncestors:
+  for i in a.iterAncestors:
+    for j in b.iterAncestors:
       if i == j:
         return i
   raise newException(TreeError, "No MRCA shared by nodes")
@@ -52,7 +48,7 @@ type
     n is TraversableNode 
     n.label is string
 
-func findNode*(tree: LabeledNode, str: string): LabeledNode = 
+func find*(tree: LabeledNode, str: string): LabeledNode = 
   ## Returns first instance of node label matching str.
   for i in tree.preorder: 
     if i.label == str:
