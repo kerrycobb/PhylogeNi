@@ -9,9 +9,7 @@ func writeAnnotations(node: TraversableNode, str: var string, data: bool) =
   when typeof(node) is WritableDataNode:
     mixin writeNewickData 
     if data:
-      str.add('[')
       str.add(node.writeNewickData)
-      str.add(']')
 
 func writeNewickString*(root: TraversableNode, data=true): string =
   ## Write newick string for Node object

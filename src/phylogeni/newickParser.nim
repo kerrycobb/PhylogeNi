@@ -1,5 +1,6 @@
 import npeg
 import ./concepts
+import ./nodeTypes
 import std/[strutils, strformat] 
 
 type
@@ -39,18 +40,19 @@ proc parseData[T](curr: var T, data: string) =
     parseNewickData(curr, data)
 
 template genericBugWorkAround() =
-  # Template definitions as workaround for bug in Nim
+  # Workaround for bug in Nim
   # https://github.com/zevv/npeg/issues/68
   # https://github.com/nim-lang/Nim/issues/22740
   template `>`(a: untyped): untyped = discard
   template `*`(a: untyped): untyped = discard
   template `-`(a: untyped): untyped = discard
   template `+`(a: untyped): untyped = discard
-  # template `?`(a: untyped): untyped = discard
-  # template `!`(a: untyped): untyped = discard
-  template `$`(a: untyped): untyped = discard
-  
-proc parseNewickString*(T: typedesc[TraversableNode], str:string): T = 
+
+proc parseNewickString*(str: string, T: typedesc[TraversableNode] = DataNode[void]): T = 
+  # TODO: Better error messages
+  # - empty string
+  # - missing ';'
+  # - int/float parsing
   genericBugWorkAround()
   var
     root = new(T)
@@ -68,11 +70,14 @@ proc parseNewickString*(T: typedesc[TraversableNode], str:string): T =
     comma      <- ',': 
         newSisterNode(curr) 
     label      <- >+(Alnum | '_'): 
-        parseLabel(curr, $1)
+        # parseLabel(curr, $1) # Can't use $ operator right now due to bug https://github.com/zevv/npeg/issues/68
+        parseLabel(curr, capture[1].s)
     length     <- ':' * >?(+Digit * ?('.' * +Digit)): 
-        parseLength(curr, $1)
+    #     parseLength(curr, $1) # Can't use $ operator right now due to bug https://github.com/zevv/npeg/issues/68
+        parseLength(curr, capture[1].s)
     data       <- >comment: 
-        parseData(curr, $1)
+        # parseData(curr, $1) # Can't use $ operator right now due to bug https://github.com/zevv/npeg/issues/68
+        parseData(curr, capture[1].s)
     annotation <- ?data * S * ?label * S * ?data * S * ?length * S * ?data  
     leaf       <- annotation  
     branchset  <- (internal | leaf) * S * *(comma * S * (internal | leaf))  
@@ -89,37 +94,12 @@ proc parseNewickString*(T: typedesc[TraversableNode], str:string): T =
     raise newException(NewickError, msg)
   result = root
 
-proc parseNewickFile*(T: typedesc[TraversableNode], path: string): T = 
+proc parseNewickFile*(path: string, T: typedesc[TraversableNode] = DataNode[void]): T = 
   var str = readFile(path)
   result = parseNewickString(T, str)
 
-
-# ###################################################
-# # Testing
-
-type
-  Nd* = ref object
-    parent*: Nd
-    children*: seq[Nd]
-    label*: string
-    length*: float
-    data*: string
-
-proc addChild*(parent, child: Nd) = 
-  ## A bug in Nim currently requires that each type matching that is 
-  ## a TraversableNode must have an addChild proc written for it. 
-  ## This will no longer be necesary when the bug is fixed
-  ## https://github.com/nim-lang/Nim/issues/22723
-  # TODO: Make this a concept once that works 
-  parent.children.add(child)
-  child.parent = parent
-
-proc parseNewickData*(n: Nd, data: string) = 
-  n.data = data 
-
-proc writeNewickData*(n: Nd): string = 
-  n.data
-
-# This works
-var t = parseNewickString(Nd, "[[Test]]((([Test]f:1.0[Test[Test]],g:1.0[Test])e:1.0[Test],d:1.0[Test])c:1.0[Test],b:1.0[Test])a:1.0[Test];")
-echo t.ascii
+proc genericBugWorkaround() = 
+  # Needed to work around bug in Nim 
+  # https://github.com/zevv/npeg/issues/68
+  # https://github.com/nim-lang/Nim/issues/22740
+  discard parseNewickString(";", DataNode[void])

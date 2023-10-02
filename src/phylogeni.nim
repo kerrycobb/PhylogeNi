@@ -4,6 +4,7 @@ import ./phylogeni/[
   manipulate,
   newickParser,
   newickWriter,
+  nodeTypes,
   traverse]
 
 export 
@@ -12,12 +13,14 @@ export
   manipulate,
   newickParser,
   newickWriter,
+  nodeTypes,
   traverse
 
-# include ./phylogeni/[
-#   concepts,
-#   coordinates,
-#   manipulate,
-#   newickParser,
-#   newickWriter,
-#   traverse]
+## =========
+## PhylogeNi
+## =========
+## 
+## PhylogeNi is a Nim library for working with phylogenetic trees.
+##  
+
+# runnableExamples:
