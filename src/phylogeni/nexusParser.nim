@@ -129,6 +129,12 @@ proc parseTreesBlock[T](nex: var Nexus[T], str: string) =
   assert r.ok
   nex.blocks.add(treeBlock)
 
+proc parseUndefinedBlock[T](nex: var Nexus[T], name, str: string) =  
+  var undefinedBlock = NexusBlock[T](kind:nexusUndefined) 
+  undefinedBlock.blockName = name 
+  undefinedBlock.blockString = str 
+  nex.blocks.add(undefinedBlock)
+
 proc parseNexusString*(str: string, T: typedesc[TraversableNode] = NexusNode): Nexus[T] =  
   genericBugWorkAround()
   var nex = Nexus[T]() 
@@ -142,9 +148,7 @@ proc parseNexusString*(str: string, T: typedesc[TraversableNode] = NexusNode): N
     trees     <- i"trees;" * >*(1-i"end;"): 
       parseTreesBlock(nex, capture[1].s)
     undefined <- >+Alpha * ';' * >*(1 - i"end;"):  
-      echo capture[1].s 
-      echo capture[2].s 
-      # parseUndefinedBlock(nex, capture[1].s)
+      parseUndefinedBlock(nex, capture[1].s, capture[2].s)
     kind      <- (data | taxa | trees | undefined) 
     nblock    <- i"begin" * S * kind * S * i"end;"  
     nexus     <- i"#nexus" * S * nblock * *(S * nblock) * S * !1 
@@ -157,34 +161,31 @@ proc parseNexusFile*(path: string, T: typedesc[TraversableNode] = NexusNode): Ne
   result = parseNexusString(str, T)
 
 
-var str = """
-#NEXUS
-Begin TAXA;
-  Dimensions ntax=4;
-  TaxLabels SpaceDog SpaceCat SpaceOrc SpaceElf;
-End;
+# Used for testing
+# var str = """
+# #NEXUS
+# Begin TAXA;
+#   Dimensions ntax=4;
+#   TaxLabels SpaceDog SpaceCat SpaceOrc SpaceElf;
+# End;
 
-Begin data;
-dimensions ntax=5 nchar=54;
-format datatype=dna missing=? gap=-;
-matrix
- Ephedra       TTAAGCCATGCATGTCTAAGTATGAACTAATTCCAAACGGTGAAACTGCGGATG
- Gnetum        TTAAGCCATGCATGTCTATGTACGAACTAATC-AGAACGGTGAAACTGCGGATG
- Welwitschia   TTAAGCCATGCACGTGTAAGTATGAACTAGTC-GAAACGGTGAAACTGCGGATG
- Ginkgo        TTAAGCCATGCATGTGTAAGTATGAACTCTTTACAGACTGTGAAACTGCGAATG
- Pinus         TTAAGCCATGCATGTCTAAGTATGAACTAATTGCAGACTGTGAAACTGCGGATG
-;
-End;
+# Begin data;
+# dimensions ntax=5 nchar=54;
+# format datatype=dna missing=? gap=-;
+# matrix
+#  Ephedra       TTAAGCCATGCATGTCTAAGTATGAACTAATTCCAAACGGTGAAACTGCGGATG
+#  Gnetum        TTAAGCCATGCATGTCTATGTACGAACTAATC-AGAACGGTGAAACTGCGGATG
+#  Welwitschia   TTAAGCCATGCACGTGTAAGTATGAACTAGTC-GAAACGGTGAAACTGCGGATG
+#  Ginkgo        TTAAGCCATGCATGTGTAAGTATGAACTCTTTACAGACTGTGAAACTGCGAATG
+#  Pinus         TTAAGCCATGCATGTCTAAGTATGAACTAATTGCAGACTGTGAAACTGCGGATG
+# ;
+# End;
 
-BEGIN TREES;
-  Tree tree1 = (((SpaceDog,SpaceCat),SpaceOrc,SpaceElf));
-END;
+# BEGIN TREES;
+#   Tree tree1 = (((SpaceDog,SpaceCat),SpaceOrc,SpaceElf));
+# END;
 
-BEGIN PAUP;
-  Dumb paup commands
-END;
-"""
-
-
-var n = parseNexusString(str)
-echo n
+# BEGIN PAUP;
+#   Dumb paup commands
+# END;
+# """
