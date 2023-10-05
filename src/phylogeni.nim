@@ -1,17 +1,19 @@
 import ./phylogeni/[
   concepts,
-  coordinates,
+  # coordinates,
   manipulate,
   newickParser,
   newickWriter,
+  nexusParser,
   nodeTypes,
   traverse]
 
 export 
   concepts,
-  coordinates,
+  # coordinates,
   manipulate,
   newickParser,
   newickWriter,
+  nexusParser,
   nodeTypes,
   traverse

@@ -47,49 +47,43 @@ iterator iterAncestors*(node: TraversableNode): TraversableNode =
     else:
       break
 
+
+# TODO: Seems that there is a bug in Nim resulting in tuple causing error
+# despite the code working. Revert to using tuple at some point to simplify this.
 type
-  NewickOrderState* = enum 
-    ascendingTree, descendingTree
+  AllorderDirection* = enum ascendingTree, descendingTree
     
-  NewickOrderNode*[T: TraversableNode] = ref object
+  Allorder*[T: TraversableNode] = object
     node*: T 
-    state*: NewickOrderState 
+    direction*: AllorderDirection 
 
-func newNewickOrderNode[T](node: T, state: NewickOrderState): NewickOrderNode[T] = 
-  NewickOrderNode[T](node:node, state:state)
+func newAllorder[T](node: T, direction: AllorderDirection): Allorder[T] = 
+  Allorder[T](node:node, direction:direction)
 
-func children*[T](node: NewickOrderNode[T]): seq[T] = 
-  node.node.children
-
-func parent*[T](node: NewickOrderNode[T]): T =
-  node.node.parent
-
-func isLeaf*[T](node: NewickOrderNode[T]): bool = 
-  ## Check if node is leaf.
-  node.node.isLeaf
-
-func isRoot*[T](node: NewickOrderNode[T]): bool =
-  node.node.isRoot
-
-proc `$`*[T](node: NewickOrderNode[T]): string = 
-  $node.node & ", " & $node.state  
-
-iterator newickorder*[T: TraversableNode](root: T): NewickOrderNode[T] = 
-  ## Newick order traverse. All internal nodes are visited twice. Leaf nodes are
-  ## only visited once. This traverese is a hybrid between preorder and 
-  ## postorder traverse. It is convenient for writing newick strings and 
-  ## plotting trees.
-  var stack: seq[NewickOrderNode[T]]
-  stack.add(newNewickOrderNode(root, descendingTree))
-  stack.add(newNewickOrderNode(root, ascendingTree))
+iterator allorder*[T: TraversableNode](root: T): Allorder[T] = 
+# iterator allorder*[T](root: T): tuple[node:T, direction:AllorderDirection] =
+  ## All order traverse. Combined preorder/postorder traverse. All leaf nodes 
+  ## are visited once in preorder direction (Ascending). All internal nodes are 
+  ## visited twice.
+  var stack: seq[Allorder[T]]
+  # var stack: seq[tuple[node: T, direction: AllorderDirection]]
+  stack.add(newAllorder(root, descendingTree))
+  stack.add(newAllorder(root, ascendingTree))
+  # stack.add((root, descendingTree))
+  # stack.add((root, ascendingTree))
   while stack.len > 0:
-    var node = stack.pop() 
-    yield node
-    if not node.isLeaf:
-      if node.state == ascendingTree:
-        for child in node.children.reversed:
+    var allorderNode = stack.pop() 
+    yield allorderNode
+    if not allorderNode.node.isLeaf:
+      if allorderNode.direction == ascendingTree:
+        let children = allorderNode.node.children 
+        for i in countdown(children.len - 1 , 0):
+          let child = children[i]
           if not child.isLeaf:
-            stack.add(newNewickOrderNode(child, descendingTree))
-            stack.add(newNewickOrderNode(child, ascendingTree))
+            stack.add(newAllorder(child, descendingTree))
+            stack.add(newAllorder(child, ascendingTree))
+            # stack.add((child, descendingTree))
+            # stack.add((child, ascendingTree))
           else:
-            stack.add(newNewickOrderNode(child, ascendingTree))
+            stack.add(newAllorder(child, ascendingTree))
+            # stack.add((child, ascendingTree))

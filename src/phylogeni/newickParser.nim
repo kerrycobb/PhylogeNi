@@ -58,8 +58,9 @@ proc parseNewickString*(str: string, T: typedesc[TraversableNode] = DataNode[voi
     root = new(T)
     curr = root
   let p = peg "newick":
-    dataChars  <- Print - {'[', ']'} 
     S          <- *Space
+    sciNot        <- +Digit * ?('.' * +Digit) * ?(i"e" * ?'-' * *Digit)
+    dataChars  <- Print - {'[', ']'} 
     nComment   <- >('[' * *(nComment | dataChars) * ']')
     comment    <- '[' * >*(nComment | dataChars) * ']'
     stop       <- ';' 
@@ -72,7 +73,7 @@ proc parseNewickString*(str: string, T: typedesc[TraversableNode] = DataNode[voi
     label      <- >+(Alnum | '_'): 
         # parseLabel(curr, $1) # Can't use $ operator right now due to bug https://github.com/zevv/npeg/issues/68
         parseLabel(curr, capture[1].s)
-    length     <- ':' * >?(+Digit * ?('.' * +Digit)): 
+    length     <- ':' * >?sciNot: 
     #     parseLength(curr, $1) # Can't use $ operator right now due to bug https://github.com/zevv/npeg/issues/68
         parseLength(curr, capture[1].s)
     data       <- >comment: 

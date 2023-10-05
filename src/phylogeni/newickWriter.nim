@@ -11,21 +11,22 @@ func writeAnnotations(node: TraversableNode, str: var string, data: bool) =
     if data:
       str.add(node.writeNewickData)
 
-func writeNewickString*(root: TraversableNode, data=true): string =
+proc writeNewickString*(root: TraversableNode, data=true): string =
   ## Write newick string for Node object
   var str = ""
-  for i in root.newickorder():
-    if i.state == ascendingTree:
+  for i in root.allorder():
+    case i.direction
+    of ascendingTree:
       if i.node.isLeaf():
         i.node.writeAnnotations(str, data)
-        if i.node != i.parent.children[^1]: # not the first node in parents children
+        if i.node != i.node.parent.children[^1]: # not the first node in parents children
           str.add(",")
       else: # internal node
         str.add("(")
-    else: # descending tree 
+    of descendingTree:
       str.add(")")
       i.node.writeAnnotations(str, data)
-      if (i.node != root) and (i.node != i.parent.children[^1]): # not last node in parents children
+      if (i.node != root) and (i.node != i.node.parent.children[^1]): # not last node in parents children
         str.add(",")
   str.add(";")
   result = str

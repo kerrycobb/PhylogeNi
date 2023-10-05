@@ -34,28 +34,28 @@ proc addChild[T: TraversableNode](parent, child: CoordNode[T]) =
   child.node.parent = parent.node.parent
   # parent.node.addChild(child.node) # TODO: Use this when the proc for TraversableNode concept works
 
-proc getCoords*[T: LengthNode](root: T, branchLengthScaling=1.0, branchSep=1.0): CoordNode[T] = 
-  ## Return coordinates for a typical rectangular or slanted phylogeny
-  assert branchLengthScaling > 0
-  assert branchSep > 0
-  var 
-    leafY = 0.0
-    currNode = CoordNode[T](node: new(T)) # Placeholder, is parent to root node of new tree
-  for i in root.newickorder:
-    case i.state
-    of ascendingTree:
-      var newNode = newCoordNode(i.node)
-      currNode.addChild(newNode)
-      newNode.x = currNode.x + (i.node.length * branchLengthScaling)
-      if i.node.isLeaf:
-        newNode.y = leafY
-        leafY += branchSep
-      else:
-        currNode = newNode
-    of descendingTree: 
-      let 
-        lo = currNode.children[0].y
-        up = currNode.children[^1].y
-      currNode.y = (up - lo) / 2 + lo
-      currNode = currNode.parent
-  result = currNode.children[0]
+# proc getCoords*[T: LengthNode](root: T, branchLengthScaling=1.0, branchSep=1.0): CoordNode[T] = 
+#   ## Return coordinates for a typical rectangular or slanted phylogeny
+#   assert branchLengthScaling > 0
+#   assert branchSep > 0
+#   var 
+#     leafY = 0.0
+#     currNode = CoordNode[T](node: new(T)) # Placeholder, is parent to root node of new tree
+#   for i in root.newickorder:
+#     case i.state
+#     of ascendingTree:
+#       var newNode = newCoordNode(i.node)
+#       currNode.addChild(newNode)
+#       newNode.x = currNode.x + (i.node.length * branchLengthScaling)
+#       if i.node.isLeaf:
+#         newNode.y = leafY
+#         leafY += branchSep
+#       else:
+#         currNode = newNode
+#     of descendingTree: 
+#       let 
+#         lo = currNode.children[0].y
+#         up = currNode.children[^1].y
+#       currNode.y = (up - lo) / 2 + lo
+#       currNode = currNode.parent
+#   result = currNode.children[0]

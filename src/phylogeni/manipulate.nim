@@ -40,13 +40,11 @@ type
 
 proc ladderize*[T: TraversableNode](root: T, order: SortOrder = Ascending) =
   ## Ladderize subtree.
-  # Should benchmark this against hash approach, first figure out implementing hashes with concept
-  # Could probably come up with more efficient way to sort using the current approach
+  # Could probably come up with more efficient way to sort 
   # Getting the index of the sorted children rather than the children would be simpler
-  # and there wouldn't have to be a node attribute for LadderNode
   var currNode = LadderNode[T]()
-  for i in root.newickorder:
-    case i.state
+  for i in root.allorder:
+    case i.direction
     of ascendingTree:
       var newNode = LadderNode[T](parent:currNode, node:i.node)
       currNode.children.add(newNode)
