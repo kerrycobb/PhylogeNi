@@ -101,12 +101,12 @@ proc parseTaxaBlock[T](nex: var Nexus[T], str: string) =
   let p = peg "taxa":
     s          <- *Space
     S          <- +Space
-    label      <- S * >+(Alnum | '_'): 
+    label      <- S * >+(Alnum | {'_', '-'}): 
       taxaBlock.taxa.add(capture[1].s)
     labels     <- i"taxlabels" * +label * s * ';' 
     dimensions <- i"dimensions" * S * i"ntax=" * >*Digit * ';': 
       taxaBlock.ntaxa = parseInt(capture[1].s)
-    taxa       <- s * dimensions * S * labels 
+    taxa       <- s * dimensions * S * labels * s * !1 
   let r = p.match(str)
   assert r.ok
   nex.add(taxaBlock)
@@ -115,16 +115,16 @@ proc parseTreesBlock[T](nex: var Nexus[T], str: string) =
   var treeBlock = NexusBlock[T](kind:nexusTrees) 
   genericBugWorkAround()
   let p = peg "trees":
-    S         <- *Space
+    s         <- *Space
     label     <- *(Alnum | {'_', '.', '-'}) 
-    pair      <- S * >?label * S * >label:
+    pair      <- s * >?label * s * >label:
       treeBlock.translate[capture[1].s] = capture[2].s 
-    paired    <- pair * *(S * ',' * pair)
+    paired    <- pair * *(s * ',' * pair)
     translate <- >i"translate" * paired * @';'
-    tree      <- S * i"tree" * S * >label * S * '=' * >@';':
+    tree      <- s * i"tree" * s * >label * s * '=' * >@';':
       var t = parseNewickString(capture[2].s, T)
       treeBlock.trees.add((capture[1].s, t))
-    trees     <- S * ?translate * +tree
+    trees     <- s * ?translate * +tree * s * !1
   let r = p.match(str)
   assert r.ok
   nex.blocks.add(treeBlock)
@@ -161,7 +161,7 @@ proc parseNexusFile*(path: string, T: typedesc[TraversableNode] = NexusNode): Ne
   result = parseNexusString(str, T)
 
 
-# Used for testing
+# # Used for testing
 # var str = """
 # #NEXUS
 # Begin TAXA;
@@ -182,10 +182,18 @@ proc parseNexusFile*(path: string, T: typedesc[TraversableNode] = NexusNode): Ne
 # End;
 
 # BEGIN TREES;
-#   Tree tree1 = (((SpaceDog,SpaceCat),SpaceOrc,SpaceElf));
+#   Translate 1 SpaceDog, 2 SpaceCat, 3 SpaceOrc, 4 SpaceElf;
+#   Tree tree1 = [&R] (((SpaceDog[&length_range={243.375355,284.829584},height_95%_HPD={1.9999999949504854E-6,6.000000098538294E-6},length_95%_HPD={252.659576,279.50401},length=268.28712902000007,length_median=268.7639845,height_median=4.00000001832268E-6,height_range={2.2737367544323206E-13,6.99999992548328E-6},height=3.8000000552074197E-6],SpaceCat),SpaceOrc,SpaceElf));
 # END;
 
 # BEGIN PAUP;
 #   Dumb paup commands
 # END;
 # """
+
+# # import ./traverse
+
+# # var n = parseNexusString(str)
+# # var t = n[2].trees[0].tree
+# # for i in t.preorder(): 
+# #   echo i.data
