@@ -18,7 +18,7 @@ proc x*[T](n: CoordNode[T]): float =
   n.x
 
 proc y*[T](n: CoordNode[T]): float = 
-  n.x
+  n.y
 
 proc node*[T](n: CoordNode[T]): T = 
   n.node
