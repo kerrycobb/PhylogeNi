@@ -1,4 +1,4 @@
-name: BioSeq Tests CI 
+name: Phylogeni Tests CI 
 on:
   push:
     branches: [ "main" ]
